@@ -7,7 +7,7 @@ import Entity.StatusEffect.*;
 
 public class ArcaneBlast extends SpecialSkill{
     public ArcaneBlast (){
-        super("Arcane Blast", "...");
+        super("Arcane Blast", "Each enemy defeated by Arcane Blast adds 10 to the Wizard’s Attack");
     }       
     @Override
     public void execute(Combatant actor, ArrayList <Combatant> targets ){

@@ -18,8 +18,6 @@ public class Stun extends StatusEffect{
             character.setActive(false);
         };
         super.applyEffect(characters);
-        System.out.println(actor.getCooldown());
-        actor.addNewEffect(new Stun(actor.getCooldown()));
     }
 
     @Override
@@ -29,7 +27,7 @@ public class Stun extends StatusEffect{
         }
         else{
             decrementTurns();
-            character.decCooldown();
+            character.reduceCooldown();
         };
     }
 

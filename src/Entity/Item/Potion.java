@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Potion extends Item{
     public Potion(){
         this.name ="Potion";
-        this.description ="Heal 100HP";
+        this.description = "Heal 100HP";
     }
     
     @Override

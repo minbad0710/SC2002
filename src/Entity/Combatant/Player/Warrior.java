@@ -1,5 +1,4 @@
 package Entity.Combatant.Player;
-import Entity.Action.*;
 import Entity.SpecialSkill.*;
 
 public class Warrior extends Player{
@@ -33,10 +32,5 @@ public class Warrior extends Player{
         this.setDefend(DEFEND);
     }
 
-    @Override
-    public Action decideAction(){
-        Action action = new UseSpecialSkill();
-        return action;
-    }
 
 }
