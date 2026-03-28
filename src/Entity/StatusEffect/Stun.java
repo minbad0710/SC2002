@@ -18,7 +18,6 @@ public class Stun extends StatusEffect{
             character.setActive(false);
         };
         super.applyEffect(characters);
-        System.out.println(actor.getCooldown());
         actor.addNewEffect(new Stun(actor.getCooldown()));
     }
 
