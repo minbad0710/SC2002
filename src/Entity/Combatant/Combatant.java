@@ -13,7 +13,7 @@ public abstract class Combatant {
     protected int defend;
     protected String name;
     protected boolean active;
-    protected int cooldown; /*True mean unavailable */
+    protected int cooldown;
     ArrayList <StatusEffect> statusEffects;
     protected SpecialSkill specialSkill;
 
