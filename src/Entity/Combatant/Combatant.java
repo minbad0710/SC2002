@@ -3,25 +3,27 @@ package Entity.Combatant;
 import Entity.SpecialSkill.SpecialSkill;
 import Entity.StatusEffect.*;
 import java.util.ArrayList;
-import Entity.Action.*;
 
 public abstract class Combatant {
     /*Variable */
     protected int hp;
+    protected int MaxHP;
     protected int speed;
     protected int attack;
     protected int defend;
     protected String name;
-    protected boolean active;
-    protected int cooldown;
+    protected boolean active; /*if stunned or not */
+    protected int cooldown; /*True mean unavailable */
     ArrayList <StatusEffect> statusEffects;
     protected SpecialSkill specialSkill;
 
     /*Getter & setter */
+    public int getMaxHP(){
+        return this.MaxHP;
+    }
     public String getName(){
         return this.name;
     }
-
     public int getHp(){
         return this.hp;
     }
@@ -43,17 +45,12 @@ public abstract class Combatant {
         this.defend = defend;
     }
     
-    public abstract Action decideAction();
     
     public void takeDamage(int damage){
         this.hp = Math.min(hp, this.hp - damage + defend);
         if (this.hp <0){
             this.hp = 0;
         };
-    }
-
-    public void print(){
-        System.out.println(this.getName()+ " HP: " + this.getHp() + " Attack: " + this.getAttack() + " Defend: " + this.getDefend());
     }
 
     public abstract void heal(int hp);
@@ -79,7 +76,7 @@ public abstract class Combatant {
     public boolean isAlive(){
         return this.getHp() >0;
     }
-    /* */
+
     public void setActive(boolean active){
         this.active = active;
     }
@@ -96,9 +93,7 @@ public abstract class Combatant {
         return this.cooldown;
     }
 
-
-    
-    public void decCooldown(){
+    public void reduceCooldown(){
         if (this.cooldown > 0)
         {this.cooldown--;};
     }
@@ -106,9 +101,9 @@ public abstract class Combatant {
     abstract public void resetDefend();
     abstract public void resetAttack();
 
-
+    /*Constructor */
     public Combatant(int max_hp, int speed, int attack, int defend){
-        this.hp = max_hp;
+        this.MaxHP = this.hp = max_hp;
         this.speed = speed;
         this.attack = attack;
         this.defend = defend;
@@ -116,5 +111,6 @@ public abstract class Combatant {
         this.active = true;
         this.cooldown = 0;
     }
+    
     
 }

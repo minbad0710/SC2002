@@ -28,7 +28,7 @@ public class Stun extends StatusEffect{
         }
         else{
             decrementTurns();
-            character.decCooldown();
+            character.reduceCooldown();
         };
     }
 

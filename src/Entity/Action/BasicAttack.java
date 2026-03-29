@@ -20,6 +20,7 @@ public class BasicAttack extends Action {
 
     @Override
     public boolean isAvailable(Combatant actor){
-        return actor.isActive();
+        return true; // check stunned in battle engine
     }
+
 }

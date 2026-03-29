@@ -1,16 +1,14 @@
 package Entity.Combatant.Enemy;
 
-import Entity.Action.*;
-
 public class Wolf extends Enemy {
     private static final int MAX_HP = 40;
     private static final int SPEED = 35;
     private static final int ATTACK = 45;
     private static final int DEFEND = 5;
 
-    public Wolf(){
+    public Wolf(String name){
         super(MAX_HP, SPEED, ATTACK, DEFEND);
-        this.name = "Wolf";
+        this.name = name;
     }
 
     @Override
@@ -31,11 +29,5 @@ public class Wolf extends Enemy {
     @Override
     public void resetDefend() {
         this.setDefend(DEFEND);
-    }
-
-    @Override
-    public Action decideAction(){
-        Action action = new BasicAttack();
-        return action;
     }
 }

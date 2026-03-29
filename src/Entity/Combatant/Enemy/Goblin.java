@@ -1,6 +1,5 @@
 package Entity.Combatant.Enemy;
 
-import Entity.Action.*;
 
 public class Goblin extends Enemy {
     private static final int MAX_HP = 55;
@@ -8,9 +7,9 @@ public class Goblin extends Enemy {
     private static final int ATTACK = 35;
     private static final int DEFEND = 15;
 
-    public Goblin(){
+    public Goblin(String name){
         super(MAX_HP, SPEED, ATTACK, DEFEND);
-        this.name = "Goblin";
+        this.name = name;
     }
 
     @Override
@@ -32,9 +31,4 @@ public class Goblin extends Enemy {
         this.setDefend(DEFEND);
     }
 
-    @Override
-    public Action decideAction(){
-        Action action = new BasicAttack();
-        return action;
-    }
 }

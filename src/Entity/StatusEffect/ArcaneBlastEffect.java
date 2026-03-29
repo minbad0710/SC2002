@@ -14,7 +14,7 @@ public class ArcaneBlastEffect extends StatusEffect{
         }
         else{
             decrementTurns();
-            character.decCooldown();
+            character.reduceCooldown();
         };
     }
 

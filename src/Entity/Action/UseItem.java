@@ -5,17 +5,17 @@ import Entity.Combatant.*;
 import Entity.Combatant.Player.*;
 import java.util.ArrayList;
 
-import Control.ItemInteract;
-
 public class UseItem extends Action{
     private Item item;
+    public UseItem(){}
+    public void setItem(Item item){
+        this.item = item;
+    }
 
     @Override
     public void execute(Combatant actor, ArrayList <Combatant> targets){
         Player p = (Player) actor;
-        /*method to show Item to choose in game CLI */
-        this.item = ItemInteract.decideItem(p);
-        item.use(actor, targets);
+        this.item.use(actor, targets);
         p.removeItem(item);
     }
 
@@ -25,5 +25,4 @@ public class UseItem extends Action{
         ArrayList<Item> items = p.getInventory();
         return items.size() > 0;
     }
-
 }
