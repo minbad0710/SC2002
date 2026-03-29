@@ -73,22 +73,19 @@ public class GameCLI {
             System.out.println("\nAvailable Items:");
             // display the available items
             for (int i = 0; i < available.length; i++) {
-                String status = selectedItems.contains(available[i]) ? "[SELECTED]" : ""; // this will show if user has selected it before
-                System.out.printf("%d. %s %s\n", (i + 1), available[i].getName(), status);
+                System.out.printf("%d. %s \n", (i + 1), available[i].getName());
             }
             
             int choice = getValidInput(1, 3);
             Item chosen = available[choice - 1];
-            // check if the item is already selected
-            // if yes, ask user to choose another item
-            if (selectedItems.contains(chosen)) {
-                System.out.println("You already picked this! Please choose a different item.");
-            } 
-            // if not, add the item to the selected list
-            else{
-                selectedItems.add(chosen);
-                System.out.println("Added " + chosen.getName() + " to inventory.");
-            }
+            if (selectedItems.size() > 0 && chosen.getName() == selectedItems.get(0).getName()) { // check if the item is already selected
+                System.out.println("Change name");
+                selectedItems.get(0).setName(chosen.getName() + " A");
+                chosen.setName(chosen.getName() + " B");
+            };
+            selectedItems.add(chosen);
+            available[choice - 1] = chosen.recreate(); // replace the chosen item with a new instance to allow multiple selection
+            System.out.println("Added " + chosen.getName() + " to inventory.");
         }
         return selectedItems;
     }

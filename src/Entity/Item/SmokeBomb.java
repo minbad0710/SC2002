@@ -11,6 +11,10 @@ public class SmokeBomb extends Item{
         this.name = "Smoke Bomb";
         this.description = "When used, Enemy attacks do 0 damage in the current turn and the next turn";
     }
+    @Override
+    public Item recreate(){
+        return new SmokeBomb();
+    }
 
     @Override
     public void use(Combatant actor, ArrayList <Combatant> targets){

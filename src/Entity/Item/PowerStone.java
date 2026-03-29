@@ -12,6 +12,11 @@ public class PowerStone extends Item{
     }
 
     @Override
+    public Item recreate(){
+        return new PowerStone();
+    }
+
+    @Override
     public void use(Combatant actor, ArrayList<Combatant> targets){
         SpecialSkill s = actor.getSpecialSkill();
         s.execute(actor, targets);

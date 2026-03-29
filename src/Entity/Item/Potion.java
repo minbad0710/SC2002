@@ -10,6 +10,10 @@ public class Potion extends Item{
     }
     
     @Override
+    public Item recreate(){
+        return new Potion();
+    }
+    @Override
     public void use(Combatant actor, ArrayList <Combatant> targets){
         actor.heal(100);
     }
