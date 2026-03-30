@@ -2,6 +2,7 @@ package Control.LevelManagment;
 import Entity.Combatant.Enemy.*;
 import java.util.ArrayList;
 public class EasyLevel extends LevelManagement{
+    private boolean backupSpawn = false;
     @Override
     public ArrayList<Enemy> getInitialSpawns(){
         ArrayList<Enemy> enemies = new ArrayList<>();
@@ -13,9 +14,14 @@ public class EasyLevel extends LevelManagement{
 
     @Override
     public boolean hasBackupSpawns(){ 
-        return false; 
+        return backupSpawn; 
     }
 
+    @Override
+    public void changeBackupSpawnStatus(boolean status){
+        this.backupSpawn = status;
+    }
+    
     @Override
     public ArrayList<Enemy> getBackupSpawns(){ 
         return new ArrayList<>(); /*return empty list here */

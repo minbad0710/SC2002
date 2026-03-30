@@ -5,19 +5,18 @@ import java.util.ArrayList;
 import Entity.Combatant.*;
 
 public class Stun extends StatusEffect{
+    final int DURATION = 2;
     public Stun(){
         this.remainingTurns = DURATION;
     }
-    public Stun(int n){
-        this.remainingTurns = n;
-    }
-    
+
     public void applyEffect(Combatant actor, ArrayList <Combatant> characters) {
         for (Combatant character: characters){
             if (character == actor){ characters.remove(actor);continue;};
             character.setActive(false);
         };
         super.applyEffect(characters);
+
     }
 
     @Override
@@ -27,7 +26,6 @@ public class Stun extends StatusEffect{
         }
         else{
             decrementTurns();
-            character.reduceCooldown();
         };
     }
 

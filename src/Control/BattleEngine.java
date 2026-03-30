@@ -39,6 +39,8 @@ public class BattleEngine {
         // start the loop of the battle. The loop will end if the game is over 
         while(!this.isGameOver()){
             this.currentRound ++;// increment each round in order to count the number of ground
+            System.out.println("-----------Round " + currentRound + " starts!-----------");
+
             this.playRound(); // this will process each round of the battle
             this.checkAndSpawnBackups(); // after each round, check the backup spawn condition
         }
@@ -60,32 +62,52 @@ public class BattleEngine {
         // sort the combatants list according to TurnOrderStrategy 
         ArrayList<Combatant> turnOrder = turnStrategy.determineTurnOrder(allCombatants);
 
-        for(Combatant c : turnOrder){
+        int size = turnOrder.size();
+        for (int i = 0; i < size ; i++) {
+            Combatant c = turnOrder.get(i);
             if(c.isAlive() && !this.isGameOver()){
                 processTurn(c);
             }
-        }
-        for(Enemy e : activeEnemies){
-            if(!e.isAlive()){
-                activeEnemies.remove(e); // if enemy is defeated, remove from the active enemy list
+            else if (this.isGameOver()){
+                break; // if the game is over, break the loop to end the battle
             }
-        }
+            
+        };
+        
+        for (int i = 0; i < activeEnemies.size(); i++) {
+            Enemy e = activeEnemies.get(i);
+            if (!e.isAlive()){
+                activeEnemies.remove(e); // if the combatant is defeated during the round, remove it from the active enemies list to avoid processing its turn in the next round
+                i--;
+            };
+        };
+
+        ui.displayBattleStatus(new ArrayList<Combatant>(){{add(player);}}, activeEnemies);
+
     }
 
     private void processTurn(Combatant c) {
 
-        for (StatusEffect effect : c.getEffectList()) {
-            effect.checkTurns(c); // check if the status effect is expired or not 
-        }
+        int size = c.getEffectList().size();
+        for (int i = 0; i < c.getEffectList().size(); i++) {
+            StatusEffect effect = c.getEffectList().get(i);
+            effect.checkTurns(c);
+            if (size != c.getEffectList().size()){
+                i--;
+            };
+            size = c.getEffectList().size();
+        };
 
         if(!c.isActive()) {
             ui.displayTurnResult(c.getName() + "-> STUNNED: Turn skipped"); // if player is stunned, skip turn
             return;
-        }
+        };
+
 
         // First case : Player's turn
-        if(c instanceof Player){
-            c.reduceCooldown(); // start turn, reduce cooldown by 1
+        if(c instanceof Player){ 
+            // start turn, reduce cooldown by 1
+            c.reduceCooldown();
             boolean actionExecuted = false;
             while (!actionExecuted) {
                 int choice = ui.promptActionSelection(4); // player decides action
@@ -123,17 +145,26 @@ public class BattleEngine {
                         ((UseItem)selectedAction).setItem(chosenItem); /*casting */
                         // check what item is selected
                         if (chosenItem instanceof Potion) {
-                            selectedAction.execute(player, targets); // for potion, the target can be empty
                             ui.displayTurnResult(player.getName() + " uses Potion! +100 HP.");
+                            selectedAction.execute(player, targets); // for potion, the target can be empty
                         } 
                         if (chosenItem instanceof PowerStone) {
-                            selectedAction.execute(player, targets); // for PowerStone, the target can be empty
-                            ui.displayTurnResult(player.getName() + " uses Power Stone! Special Skill is ready.");
+                            ui.displayTurnResult(player.getName() + " uses Power Stone! Special Skill is triggered.");
+                            if(player instanceof Wizard){
+                                targets.addAll(activeEnemies); // Arcane Blast will target all alive enemies
+                                ui.displayTurnResult(player.getName() + " cast Arcane Blast on all enemies!");
+                            } 
+                            if(player instanceof Warrior){
+                                int enemy_index = ui.promptTargetSelection(activeEnemies); // the target is chosen by player
+                                targets.add(activeEnemies.get(enemy_index));
+                                ui.displayTurnResult(player.getName() + " used Shield Bash on " + activeEnemies.get(enemy_index).getName());
+                            };
+                            selectedAction.execute(player, targets); // for PowerStone
                         } 
                         if (chosenItem instanceof SmokeBomb) {
+                            ui.displayTurnResult(player.getName() + " uses Smoke Bomb! Enemy attacks will deal 0 damage.");
                             targets.addAll(activeEnemies); // for smoke bomb, the target is all alive enemies
                             selectedAction.execute(player, targets);
-                            ui.displayTurnResult(player.getName() + " uses Smoke Bomb! Enemy attacks will deal 0 damage.");
                         }
                         actionExecuted = true; // if action is executed, meaning that end the loop
 
@@ -157,7 +188,9 @@ public class BattleEngine {
                             targets.add(activeEnemies.get(enemy_index));
                             selectedAction.execute(player, targets);
                             ui.displayTurnResult(player.getName() + " used Shield Bash on " + activeEnemies.get(enemy_index).getName());
-                        }
+                        };
+
+                        
                         actionExecuted = true; // if action is executed, meaning that end the loop
  
                         break;
@@ -180,6 +213,7 @@ public class BattleEngine {
     private void checkAndSpawnBackups() {
         if (activeEnemies.isEmpty() && level.hasBackupSpawns()) {
             activeEnemies.addAll(level.getBackupSpawns());
+            level.changeBackupSpawnStatus(false); // change the backup spawn status to false to avoid multiple spawn
             ui.displayTurnResult("All initial enemies eliminated → Backup Spawn triggered!");
         }
     }

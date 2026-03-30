@@ -8,7 +8,7 @@ public class ShieldBash extends SpecialSkill{
     /**
      * 
      */
-    final int DURATION = 2;
+    final int DURATION = 3;
     public ShieldBash(){
         super("ShieldBash", "Affected entity is unable to take actions for the current turn and the next turn.");
     }
@@ -18,7 +18,7 @@ public class ShieldBash extends SpecialSkill{
         BasicAttack attack = new BasicAttack();
         attack.execute(actor, targets);
         Stun s = new Stun();
-        actor.setCooldown(2);
+        actor.setCooldown(DURATION);
         s.applyEffect(actor,targets);
     }
 }   

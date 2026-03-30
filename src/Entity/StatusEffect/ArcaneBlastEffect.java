@@ -14,7 +14,6 @@ public class ArcaneBlastEffect extends StatusEffect{
         }
         else{
             decrementTurns();
-            character.reduceCooldown();
         };
     }
 
@@ -27,7 +26,6 @@ public class ArcaneBlastEffect extends StatusEffect{
                 user.setAttack(user.getAttack()+10);
             };
         };
-        user.addNewEffect(this);
     }
 
     @Override

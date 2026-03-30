@@ -14,7 +14,7 @@ public abstract class Player extends Combatant{
         super(max_hp, speed, attack, defend);
     }
     
-    public void setInvetory(ArrayList<Item> inventory){
+    public void setInventory(ArrayList<Item> inventory){
         this.inventory = inventory; // this one will match with the promptInitialItemSelection() in GameCLI when we connect them in the main
     }
     

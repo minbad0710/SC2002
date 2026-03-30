@@ -67,6 +67,7 @@ public class GameCLI {
     
         System.out.println("\n--- INITIAL ITEM SELECTION --- \n");
         System.out.println("You can choose 2 items: \n");
+        Item [] available = {new Potion(), new PowerStone(), new SmokeBomb()};
         
         while (selectedItems.size() < 2) {
             System.out.println("Available Items:\n");
@@ -74,24 +75,13 @@ public class GameCLI {
             System.out.println("2. Power Stone\n");
             System.out.println("3. Smoke Bomb\n");
             
-            int choice = getValidInput(1, 3); // the player can only choose between 1 and 3
-            Item chosen = null; // for polymorphism purpose
 
-            switch (choice) {
-                case 1:
-                    chosen = new Potion(); // polymorphism, creating a new Potion only when it is chosen
-
-                    break;
-                case 2:
-                    chosen = new PowerStone(); // polymorphism, creating a new PowerStone only when it is chosen
-
-                    break;
-                case 3:
-                    chosen = new SmokeBomb(); // polymorphism, creating a new SmokeBomb only when it is chosen
-
-                    break;
-            }
-
+            int choice = getValidInput(1, 3);
+            Item chosen = available[choice - 1];
+            if (selectedItems.size() > 0 && chosen.getName() == selectedItems.get(0).getName()) { // check if the item is already selected
+                selectedItems.get(0).setName(chosen.getName() + " A");
+                chosen.setName(chosen.getName() + " B");
+            };
             selectedItems.add(chosen);
             System.out.println("Added" + chosen.getName() + " to inventory.");
         }

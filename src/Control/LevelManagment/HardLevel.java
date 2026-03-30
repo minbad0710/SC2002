@@ -3,6 +3,7 @@ import Entity.Combatant.Enemy.*;
 import java.util.ArrayList;
 
 public class HardLevel extends LevelManagement{
+    private boolean backupSpawn = true;
     @Override
     public ArrayList<Enemy> getInitialSpawns(){
         ArrayList<Enemy> enemies = new ArrayList<>();
@@ -13,7 +14,12 @@ public class HardLevel extends LevelManagement{
 
     @Override
     public boolean hasBackupSpawns(){ 
-        return true; 
+        return backupSpawn; 
+    }
+
+    @Override
+    public void changeBackupSpawnStatus(boolean status){
+        this.backupSpawn = status;
     }
 
     @Override
