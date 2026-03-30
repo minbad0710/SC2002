@@ -6,6 +6,7 @@ import Entity.Combatant.*;
 import Entity.StatusEffect.*;
 
 public class ArcaneBlast extends SpecialSkill{
+    final int DURATION = 3;
     public ArcaneBlast (){
         super("Arcane Blast", "Each enemy defeated by Arcane Blast adds 10 to the Wizard’s Attack");
     }       
@@ -13,8 +14,7 @@ public class ArcaneBlast extends SpecialSkill{
     public void execute(Combatant actor, ArrayList <Combatant> targets ){
         ArcaneBlastEffect e = new ArcaneBlastEffect();
         e.applyEffect(actor, targets);
-        actor.setCooldown(2);
-        
+        actor.setCooldown(DURATION);     
     } 
     
 }

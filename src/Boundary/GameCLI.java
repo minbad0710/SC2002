@@ -79,7 +79,6 @@ public class GameCLI {
             int choice = getValidInput(1, 3);
             Item chosen = available[choice - 1];
             if (selectedItems.size() > 0 && chosen.getName() == selectedItems.get(0).getName()) { // check if the item is already selected
-                System.out.println("Change name");
                 selectedItems.get(0).setName(chosen.getName() + " A");
                 chosen.setName(chosen.getName() + " B");
             };

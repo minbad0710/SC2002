@@ -14,8 +14,8 @@ public class ArcaneBlastEffect extends StatusEffect{
         }
         else{
             decrementTurns();
-            character.reduceCooldown();
         };
+        character.reduceCooldown();
     }
 
     /*Characters passed in the list must still be alive */
