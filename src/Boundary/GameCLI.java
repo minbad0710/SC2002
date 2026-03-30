@@ -63,26 +63,37 @@ public class GameCLI {
     /*asking user to choose*/
     // choose a list of inventory for player at the beginning of the game
     public ArrayList<Item> promptInitialItemSelection() {
-        ArrayList<Item> selectedItems = new ArrayList<>(); // create an empty list to add items in
-        Item[] available = { new Potion(), new PowerStone(), new SmokeBomb() }; // list of available items
-        
-        System.out.println("\n--- INITIAL ITEM SELECTION ---");
-        System.out.println("Choose 2 items for your adventure:");
+        ArrayList<Item> selectedItems = new ArrayList<>();
+    
+        System.out.println("\n--- INITIAL ITEM SELECTION --- \n");
+        System.out.println("You can choose 2 items: \n");
         
         while (selectedItems.size() < 2) {
-            System.out.println("\nAvailable Items:");
-            // display the available items
-            for (int i = 0; i < available.length; i++) {
-                String status = selectedItems.contains(available[i]) ? "[SELECTED]" : ""; // this will show if user has selected it before
-                System.out.printf("%d. %s %s\n", (i + 1), available[i].getName(), status);
+            System.out.println("Available Items:\n");
+            System.out.println("1. Potion\n");
+            System.out.println("2. Power Stone\n");
+            System.out.println("3. Smoke Bomb\n");
+            
+            int choice = getValidInput(1, 3); // the player can only choose between 1 and 3
+            Item chosen = null; // for polymorphism purpose
+
+            switch (choice) {
+                case 1:
+                    chosen = new Potion(); // polymorphism, creating a new Potion only when it is chosen
+
+                    break;
+                case 2:
+                    chosen = new PowerStone(); // polymorphism, creating a new PowerStone only when it is chosen
+
+                    break;
+                case 3:
+                    chosen = new SmokeBomb(); // polymorphism, creating a new SmokeBomb only when it is chosen
+
+                    break;
             }
-            
-            int choice = getValidInput(1, 3);
-            Item chosen = available[choice - 1];
-            
-    
+
             selectedItems.add(chosen);
-            System.out.println("Added " + chosen.getName() + " to inventory.");
+            System.out.println("Added" + chosen.getName() + " to inventory.");
         }
         return selectedItems;
     }

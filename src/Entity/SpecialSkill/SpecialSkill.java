@@ -17,8 +17,8 @@ public abstract class SpecialSkill {
         return this.description;
     }
 
-    public SpecialSkill(String name, String descrition){
+    public SpecialSkill(String name, String description){
         this.name = name;
-        this.description = "...";
+        this.description = description;
     }
 }

@@ -15,5 +15,9 @@ public abstract class Item {
         return description;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public abstract void use(Combatant actor, ArrayList<Combatant> targets);
 }

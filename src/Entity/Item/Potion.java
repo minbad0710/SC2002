@@ -9,6 +9,7 @@ public class Potion extends Item{
         this.description = "Heal 100HP";
     }
     
+
     @Override
     public void use(Combatant actor, ArrayList <Combatant> targets){
         actor.heal(100);

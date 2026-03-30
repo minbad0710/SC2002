@@ -11,6 +11,7 @@ public class PowerStone extends Item{
         this.description = "Activate Special skill without affecting cooldown";
     }
 
+
     @Override
     public void use(Combatant actor, ArrayList<Combatant> targets){
         SpecialSkill s = actor.getSpecialSkill();

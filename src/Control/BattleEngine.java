@@ -70,7 +70,6 @@ public class BattleEngine {
                 activeEnemies.remove(e); // if enemy is defeated, remove from the active enemy list
             }
         }
-
     }
 
     private void processTurn(Combatant c) {
