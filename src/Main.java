@@ -21,8 +21,6 @@ public class Main{
                 player = new Wizard(); // create a Wizard instance
                 break;
         };
-
-        player.setInventory(ui.promptInitialItemSelection()); // prompt the user to select initial items and set the player's inventory
         choice = ui.promptDifficultySelection(); // prompt the user to select a level
         switch (choice) { // create the LevelManagement instance based on the user's choice
             case 1:
@@ -35,6 +33,8 @@ public class Main{
                 level = new HardLevel(); // create a HardLevelManagement instance
                 break;
         };
+        player.setInventory(ui.promptInitialItemSelection()); // prompt the user to select initial items and set the player's inventory
+        
         BattleEngine engine = new BattleEngine(player, level, turnStrategy, ui); // create the BattleEngine instance with the created instances
         engine.startBattle(); // start the battle
     }

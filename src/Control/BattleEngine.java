@@ -53,12 +53,26 @@ public class BattleEngine {
         }
     }
 
+    private void checkStatusEffects(ArrayList<Combatant> combatants) {
+        for (Combatant c : combatants) {
+            int size = c.getEffectList().size();
+            for (int i = 0; i < c.getEffectList().size(); i++) {
+                StatusEffect effect = c.getEffectList().get(i);
+                effect.checkTurns(c);
+                if (size != c.getEffectList().size()){
+                    i--;
+                };
+                size = c.getEffectList().size();
+            };
+        }
+    }
+
     private void playRound() {
         // each round, we will add all the combatants to the list
         ArrayList<Combatant> allCombatants = new ArrayList<>();
         allCombatants.add(player); // add player to the list
         allCombatants.addAll(activeEnemies); // add all alive ememies 
-
+        checkStatusEffects(allCombatants); // check the status effect for all combatants at the start of each round
         // sort the combatants list according to TurnOrderStrategy 
         ArrayList<Combatant> turnOrder = turnStrategy.determineTurnOrder(allCombatants);
 
@@ -88,21 +102,10 @@ public class BattleEngine {
 
     private void processTurn(Combatant c) {
 
-        int size = c.getEffectList().size();
-        for (int i = 0; i < c.getEffectList().size(); i++) {
-            StatusEffect effect = c.getEffectList().get(i);
-            effect.checkTurns(c);
-            if (size != c.getEffectList().size()){
-                i--;
-            };
-            size = c.getEffectList().size();
-        };
-
         if(!c.isActive()) {
             ui.displayTurnResult(c.getName() + "-> STUNNED: Turn skipped"); // if player is stunned, skip turn
             return;
         };
-
 
         // First case : Player's turn
         if(c instanceof Player){ 

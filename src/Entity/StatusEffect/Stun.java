@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import Entity.Combatant.*;
 
 public class Stun extends StatusEffect{
-    final int DURATION = 2;
+    final int DURATION = 1;
     public Stun(){
         this.remainingTurns = DURATION;
     }
