@@ -11,8 +11,8 @@ public class SmokeBombEffect extends StatusEffect{
     public void applyEffect(ArrayList<Combatant> characters) {
         for (Combatant character: characters){
             character.setAttack(0);
+            character.addNewEffect(new SmokeBombEffect());
         };
-        super.applyEffect(characters);
     }
 
     @Override
