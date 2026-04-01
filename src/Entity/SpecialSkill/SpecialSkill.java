@@ -13,7 +13,7 @@ public abstract class SpecialSkill {
         return this.name;
     }
 
-    public String description(){
+    public String getDescription(){
         return this.description;
     }
 
