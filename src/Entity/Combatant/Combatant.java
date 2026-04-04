@@ -14,7 +14,7 @@ public abstract class Combatant {
     protected String name;
     protected boolean active; /*if stunned or not */
     protected int cooldown; /*True mean unavailable */
-    ArrayList <StatusEffect> statusEffects;
+    protected ArrayList <StatusEffect> statusEffects;
     protected SpecialSkill specialSkill;
 
     /*Getter & setter */
