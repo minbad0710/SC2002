@@ -1,6 +1,6 @@
 package Entity.Action;
 
-import java.util.ArrayList;
+
 
 import Entity.Combatant.Combatant;
 
@@ -11,16 +11,21 @@ public class BasicAttack extends Action {
     }
 
     @Override
-    public void execute(Combatant actor, ArrayList <Combatant> targets){
+    public void execute(Combatant actor){
         for (Combatant target: targets){
             if (target == actor){continue;};
             target.takeDamage(actor.getAttack());
         };
+        this.resultMessage = actor.getName() + " attacks " + targets.get(0).getName() + " for " + actor.getAttack() + " damage.";
     }
 
     @Override
     public boolean isAvailable(Combatant actor){
         return true; // check stunned in battle engine
+    }
+
+    public TargetType getTargetType(Combatant actor) {
+        return TargetType.SINGLE_ENEMY;
     }
 
 }

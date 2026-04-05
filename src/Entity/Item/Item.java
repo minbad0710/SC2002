@@ -3,6 +3,7 @@ package Entity.Item;
 import Entity.Combatant.Combatant;
 import java.util.ArrayList;
 
+import Entity.Action.TargetType;
 public abstract class Item {
     protected String name;
     protected String description;
@@ -20,4 +21,6 @@ public abstract class Item {
     }
 
     public abstract void use(Combatant actor, ArrayList<Combatant> targets);
+
+    public abstract TargetType getTargetType(Combatant actor);
 }

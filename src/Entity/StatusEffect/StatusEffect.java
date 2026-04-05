@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public class StatusEffect {
     final int DURATION = 1;
     int remainingTurns;
+
     public StatusEffect(){
         this.remainingTurns = DURATION;
     }
@@ -14,9 +15,11 @@ public class StatusEffect {
             character.addNewEffect(this);
         };
     }
+
     public void decrementTurns(){
         remainingTurns--;
     };
+
     public void checkTurns(Combatant character){
         if(remainingTurns == 0){
             removeEffect(character);

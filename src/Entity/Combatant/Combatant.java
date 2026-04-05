@@ -84,6 +84,9 @@ public abstract class Combatant {
     public boolean isActive(){
         return this.active;
     }
+    public String notActive(){
+        return this.name + " is STUNNED! Turn skipped.";
+    }
 
     public void setCooldown(int n){
         this.cooldown = n;

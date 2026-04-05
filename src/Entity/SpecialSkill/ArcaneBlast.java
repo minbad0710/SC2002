@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import Entity.Combatant.*;
 import Entity.StatusEffect.*;
-
+import Entity.Action.TargetType;
 public class ArcaneBlast extends SpecialSkill{
     final int DURATION = 3;
     public ArcaneBlast (){
@@ -17,6 +17,10 @@ public class ArcaneBlast extends SpecialSkill{
         actor.setCooldown(DURATION);     
     } 
     
+    @Override
+    public TargetType getTargetType() {
+        return TargetType.ALL_ENEMIES;
+    }
 }
 
 

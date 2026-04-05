@@ -27,4 +27,14 @@ public class EasyLevel extends LevelManagement{
         return new ArrayList<>(); /*return empty list here */
     }
 
+    @Override
+    public String getLevelDescription() {
+        return "Easy (3 Goblins)";
+    }
+
+    @Override
+    public LevelManagement cloneLevel() {
+        return new EasyLevel();
+    }
+
 }

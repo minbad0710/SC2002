@@ -1,41 +1,70 @@
 
+import java.util.ArrayList;
+
+import Boundary.BattleUI;
 import Boundary.GameCLI;
 import Control.BattleEngine;
 import Control.LevelManagment.*;
 import Control.TurnOrderStrategy.*;
 import Entity.Combatant.Player.*;
+import Entity.Item.Item;
+import Entity.Item.Potion;
+import Entity.Item.PowerStone;
+import Entity.Item.SmokeBomb;
 
 
 public class Main{
     public static void main(String[] args) {
-        GameCLI ui = new GameCLI(); // create the UI instance
-        LevelManagement level = null; // create the LevelManagement instance
-        TurnOrderStrategy turnStrategy = new SpeedOrderStrategy(); // create the TurnOrderStrategy instance
-        int choice = ui.promptCharacterSelection(); // prompt the user to select a character
-        Player player = null; // create the Player instance
-        switch (choice) { // create the Player instance based on the user's choice
-            case 1:
-                player = new Warrior(); // create a Warrior instance
-                break;
-            case 2:
-                player = new Wizard(); // create a Wizard instance
-                break;
-        };
-        choice = ui.promptDifficultySelection(); // prompt the user to select a level
-        switch (choice) { // create the LevelManagement instance based on the user's choice
-            case 1:
-                level = new EasyLevel(); // create an EasyLevelManagement instance
-                break;
-            case 2:
-                level = new MediumLevel(); // create a MediumLevelManagement instance
-                break;
-            case 3:
-                level = new HardLevel(); // create a HardLevelManagement instance
-                break;
-        };
-        player.setInventory(ui.promptInitialItemSelection()); // prompt the user to select initial items and set the player's inventory
-        
-        BattleEngine engine = new BattleEngine(player, level, turnStrategy, ui); // create the BattleEngine instance with the created instances
-        engine.startBattle(); // start the battle
+        BattleUI ui = new GameCLI(); 
+        boolean running = true;
+
+        ArrayList<Player> playerTemplates = new ArrayList<>();
+        playerTemplates.add(new Warrior());
+        playerTemplates.add(new Wizard());
+
+        ArrayList<LevelManagement> levelTemplates = new ArrayList<>();
+        levelTemplates.add(new EasyLevel());
+        levelTemplates.add(new MediumLevel());
+        levelTemplates.add(new HardLevel());
+
+        ArrayList<Item> itemPool = new ArrayList<>();
+        itemPool.add(new Potion());
+        itemPool.add(new PowerStone());
+        itemPool.add(new SmokeBomb());
+
+        while(running){
+            Player selectedTemplate = ui.promptCharacterSelection(playerTemplates);
+         
+            ArrayList<Item> initialItems = ui.promptInitialItemSelection(itemPool);
+            LevelManagement selectedLevel = ui.promptDifficultySelection(levelTemplates);
+            
+            boolean matchRunning = true;
+            while(matchRunning) {
+                Player player = selectedTemplate.clonePlayer();
+                player.setInventory(new ArrayList<>(initialItems)); 
+                
+                LevelManagement current_level = selectedLevel.cloneLevel();
+                
+                TurnOrderStrategy turnStrategy = new SpeedOrderStrategy();
+                BattleEngine engine = new BattleEngine(player, current_level, turnStrategy, ui);
+                
+                int result = engine.startBattle();
+                
+                switch (result) {
+                    case 1: 
+                        ui.displayRestartMessage();
+                        break;
+                    case 2:
+                        ui.displayReturnHomeMessage();
+                        matchRunning = false;
+                        break;
+                    case 3: // Exit
+                        ui.displayExitMessage();
+                        matchRunning = false;
+                        running = false;
+                        break;
+                }
+            }
+        }
     }
 }

@@ -2,7 +2,7 @@ package Entity.Item;
 
 import Entity.Combatant.Combatant;
 import java.util.ArrayList;
-
+import Entity.Action.TargetType;
 public class Potion extends Item{
     public Potion(){
         this.name ="Potion";
@@ -13,5 +13,10 @@ public class Potion extends Item{
     @Override
     public void use(Combatant actor, ArrayList <Combatant> targets){
         actor.heal(100);
+    }
+
+    @Override
+    public TargetType getTargetType(Combatant actor) {
+        return TargetType.SELF;
     }
 }

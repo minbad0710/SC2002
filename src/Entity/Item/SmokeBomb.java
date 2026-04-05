@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import Entity.Combatant.Combatant;
 import Entity.StatusEffect.SmokeBombEffect;
 import Entity.StatusEffect.StatusEffect;
-
+import Entity.Action.TargetType;
 public class SmokeBomb extends Item{
     public SmokeBomb(){
         this.name = "Smoke Bomb";
@@ -16,5 +16,10 @@ public class SmokeBomb extends Item{
     public void use(Combatant actor, ArrayList <Combatant> targets){
         StatusEffect e = new SmokeBombEffect();
         e.applyEffect(targets);
+    }
+
+    @Override
+    public TargetType getTargetType(Combatant actor) {
+        return TargetType.ALL_ENEMIES;
     }
 }

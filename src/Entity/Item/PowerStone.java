@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import Entity.Combatant.Combatant;
 import Entity.SpecialSkill.SpecialSkill;
-
+import Entity.Action.TargetType;
 public class PowerStone extends Item{
     public PowerStone(){
         this.name= "Power Stone";
@@ -14,9 +14,15 @@ public class PowerStone extends Item{
 
     @Override
     public void use(Combatant actor, ArrayList<Combatant> targets){
+        int cooldown = actor.getCooldown();
         SpecialSkill s = actor.getSpecialSkill();
         s.execute(actor, targets);
-        actor.setCooldown(0);
+        actor.setCooldown(cooldown);
+    }
+
+    @Override
+    public TargetType getTargetType(Combatant actor) {
+        return actor.getSpecialSkill().getTargetType();
     }
 
 }

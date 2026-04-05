@@ -2,7 +2,7 @@ package Entity.SpecialSkill;
 
 import Entity.Combatant.*;
 import java.util.ArrayList;
-
+import Entity.Action.TargetType;
 public abstract class SpecialSkill {
     protected String name;
     protected String description;
@@ -21,4 +21,6 @@ public abstract class SpecialSkill {
         this.name = name;
         this.description = description;
     }
+
+    public abstract TargetType getTargetType();
 }

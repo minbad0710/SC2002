@@ -32,5 +32,10 @@ public class Wizard extends Player {
     public void resetDefend(){
         this.setDefend(DEFEND);
     }
+
+    @Override
+    public Player clonePlayer() {
+        return new Wizard();
+    }
     
 }
