@@ -6,9 +6,9 @@ import java.util.ArrayList;
 public class ArcaneBlastEffect extends StatusEffect{
     
     /*Characters passed in the list must still be alive */
+    @Override
     public void applyEffect(Combatant user, ArrayList <Combatant> characters){
         for (Combatant character: characters){
-            if (character == user) {continue;};
             character.takeDamage(user.getAttack());
             if (character.isAlive() == false){
                 user.setAttack(user.getAttack()+10);

@@ -7,6 +7,7 @@ public class Wizard extends Player {
     protected final static int SPEED = 20;
     protected final static int ATTACK = 50;
     protected final static int DEFEND = 10;
+    // Constructor
     public Wizard() {
         super(MAX_HP, SPEED, ATTACK, DEFEND);
         this.specialSkill = new ArcaneBlast();

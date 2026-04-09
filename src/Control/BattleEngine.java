@@ -4,7 +4,7 @@ import Entity.Combatant.Combatant;
 import Entity.Combatant.Enemy.Enemy;
 import Entity.Combatant.Player.Player;
 import Entity.StatusEffect.StatusEffect;
-import Entity.Action.*;
+import Entity.Action.Action;
 import Control.LevelManagment.LevelManagement;
 import Boundary.BattleUI;
 import java.util.ArrayList;
@@ -45,10 +45,11 @@ public class BattleEngine {
         else{
             ui.displayDefeatScreen(activeEnemies.size(), currentRound); // this for defeat
         }
-
+        // user's choice after game finished
         return ui.promptGameOverOptions();
     }
 
+    // each turn we check the applying status effect of each combatant
     private void checkStatusEffects(ArrayList<Combatant> combatants) {
         for (Combatant c : combatants) {
             int size = c.getEffectList().size();
@@ -63,6 +64,7 @@ public class BattleEngine {
         }
     }
 
+    // process of each round
     private void playRound() {
         // each round, we will add all the combatants to the list
         ArrayList<Combatant> allCombatants = new ArrayList<>();
@@ -72,49 +74,55 @@ public class BattleEngine {
         // sort the combatants list according to TurnOrderStrategy 
         ArrayList<Combatant> turnOrder = turnStrategy.determineTurnOrder(allCombatants);
 
+        // process turn for each combatant
         int size = turnOrder.size();
         for (int i = 0; i < size ; i++) {
             Combatant c = turnOrder.get(i);
             if(c.isAlive() && !this.isGameOver()){
                 processTurn(c);
+                if(!player.isAlive()){
+                    ui.displayTurnResult(player.notAlive());
+                    break;
+                }
+                for(int j = 0; j < activeEnemies.size(); j++) {
+                    Enemy e = activeEnemies.get(j);
+                    if (!e.isAlive()){
+                        ui.displayTurnResult(e.notAlive());
+                        activeEnemies.remove(e); 
+                        j--;
+                    }
+                }
             }
             else if (this.isGameOver()){
                 break; // if the game is over, break the loop to end the battle
             }
-            
         };
-        
-        for (int i = 0; i < activeEnemies.size(); i++) {
-            Enemy e = activeEnemies.get(i);
-            if (!e.isAlive()){
-                activeEnemies.remove(e); // if the combatant is defeated during the round, remove it from the active enemies list to avoid processing its turn in the next round
-                i--;
-            };
-        };
-
-        ui.displayBattleStatus(new ArrayList<Combatant>(){{add(player);}}, activeEnemies);
-
+        ui.displayBattleStatus(new ArrayList<Player>(){{add(player);}}, activeEnemies);
     }
 
+    // process turn for each combatant
     private void processTurn(Combatant c) {
         if (!c.isActive()) {
-            ui.displayTurnResult(c.notActive());
+            ui.displayTurnResult(c.notActive()); // when combatant is stunned
             return;
         }
         Action action;
-
+        // if it is player
         if (c instanceof Player) {
             Player p = (Player) c;
             p.reduceCooldown();
             action = ui.promptPlayerActionSelection(p, activeEnemies);
         } 
+        // if it is enemy
         else {
-            action = ui.promptEnemyActionSelection(player);
+            Enemy e = (Enemy) c;
+            action = ui.promptEnemyActionSelection(e, player);
         }
-
+        // after choosing action, exceute it
         action.execute(c);
         ui.displayTurnResult(action.getResultMessage()); 
     }
+
     // method for backup spawn 
     private void checkAndSpawnBackups() {
         if (activeEnemies.isEmpty() && level.hasBackupSpawns()) {
@@ -123,6 +131,7 @@ public class BattleEngine {
             this.ui.notifyBackupSpawn(); // notify the player that backup spawn is triggered
         }
     }
+
     // check if the game is over or not
     private boolean isGameOver() {
         return !player.isAlive() || (activeEnemies.isEmpty() && !level.hasBackupSpawns());

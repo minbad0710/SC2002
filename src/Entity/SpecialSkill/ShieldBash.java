@@ -5,14 +5,16 @@ import Entity.StatusEffect.*;
 import java.util.ArrayList;
 import Entity.Action.BasicAttack;
 import Entity.Action.TargetType;
+
 public class ShieldBash extends SpecialSkill{
     final int DURATION = 3;
+    // Constructor
     public ShieldBash(){
         super("ShieldBash", "Affected entity is unable to take actions for the current turn and the next turn.");
     }
-
-    public void execute(Combatant actor, ArrayList <Combatant> targets)
-    {
+    
+    @Override
+    public void execute(Combatant actor, ArrayList <Combatant> targets){
         BasicAttack attack = new BasicAttack();
         attack.setTargets(targets);
         attack.execute(actor);

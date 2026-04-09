@@ -1,21 +1,20 @@
 package Entity.StatusEffect;
 
-import Entity.Combatant.*;
 import java.util.ArrayList;
 
-public class StatusEffect {
+import Entity.Combatant.*;
+
+
+public abstract class StatusEffect {
     final int DURATION = 1;
     int remainingTurns;
 
     public StatusEffect(){
         this.remainingTurns = DURATION;
     }
-    public void applyEffect(ArrayList <Combatant> characters){
-        for (Combatant character: characters){
-            character.addNewEffect(this);
-        };
-    }
-
+    
+    public abstract void applyEffect(Combatant user, ArrayList <Combatant> characters);
+    
     public void decrementTurns(){
         remainingTurns--;
     };

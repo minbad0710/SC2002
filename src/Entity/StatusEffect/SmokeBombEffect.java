@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import Entity.Combatant.*;
 
 public class SmokeBombEffect extends StatusEffect{
+    // Constructor
     public SmokeBombEffect(){
         this.remainingTurns = DURATION;
     }
-    
-    public void applyEffect(ArrayList<Combatant> characters) {
+
+    @Override
+    public void applyEffect(Combatant user, ArrayList <Combatant> characters) {
         for (Combatant character: characters){
             character.setAttack(0);
             character.addNewEffect(new SmokeBombEffect());

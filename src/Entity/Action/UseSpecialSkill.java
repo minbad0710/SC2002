@@ -1,11 +1,10 @@
 package Entity.Action;
 
-
 import Entity.Combatant.Combatant;
-
 import Entity.SpecialSkill.SpecialSkill;
 
 public class UseSpecialSkill extends Action{
+    // Constructor
     public UseSpecialSkill(){
         this.name = "Special Skill";
         this.description = "Using special skill";
@@ -19,7 +18,7 @@ public class UseSpecialSkill extends Action{
     
     @Override
     public boolean isAvailable(Combatant actor){
-        return actor.getCooldown()==0;
+        return actor.getCooldown() == 0;
     }
 
     @Override

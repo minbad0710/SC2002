@@ -6,7 +6,7 @@ public class Warrior extends Player{
     private static final int SPEED = 30;
     private static final int ATTACK = 40;
     private static final int DEFEND = 20;
-
+    // Constructor
     public Warrior(){
         super(MAX_HP, SPEED, ATTACK, DEFEND);
         this.specialSkill = new ShieldBash();

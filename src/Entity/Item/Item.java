@@ -17,7 +17,7 @@ public abstract class Item {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name; // change the name when player chose two similar items
     }
 
     public abstract void use(Combatant actor, ArrayList<Combatant> targets);

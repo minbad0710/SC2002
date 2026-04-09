@@ -1,6 +1,5 @@
 package Boundary;
 
-import Entity.Action.BasicAttack;
 import Entity.Action.UseItem;
 import Entity.Combatant.Combatant;
 import Entity.Combatant.Enemy.Enemy;
@@ -9,7 +8,6 @@ import Entity.Item.Item;
 import Entity.Action.Action;
 import java.util.ArrayList;
 import java.util.Scanner;
-
 import Control.LevelManagment.LevelManagement;
 import Entity.Action.TargetType;
 
@@ -28,16 +26,26 @@ public class GameCLI implements BattleUI {
     public void displayStartofEachRound(int round){
         System.out.println("-----------Round " + round + " starts!-----------");
     }
-    public void displayBattleStatus(ArrayList<Combatant> players, ArrayList<Enemy> enemies) {
+    public void displayBattleStatus(ArrayList <Player> players, ArrayList<Enemy> enemies) {
         System.out.println("\n--- BATTLE STATUS ---");
-        for (Combatant p : players) {
-            System.out.printf("[Player] %s | HP: %d/%d | ATK: %d | DEF: %d | SPD: %d\n",
+        for (Player p : players) {
+            System.out.printf("[Player] %s | HP: %d/%d | ATK: %d | DEF: %d | SPD: %d |",
                 p.getName(), p.getHp(), p.getMaxHP(), p.getAttack(), p.getDefend(), p.getSpeed());
+            if (p.getInventory().size() > 0) {
+                System.out.printf("The invetory list: ");
+                for(int i = 0; i < p.getInventory().size(); i++){
+                    if( i != p.getInventory().size() - 1)
+                        System.out.printf("%s, ", p.getInventory().get(i).getName());
+                    else
+                        System.out.printf("%s |", p.getInventory().get(i).getName());
+                }
+            }
+            System.out.printf("Special Skills Cooldown: %d\n", p.getCooldown());
         }
         System.out.println("---------------------");
         for (Enemy e : enemies) {
-            System.out.printf("[Enemy] %s | HP: %d | ATK: %d | DEF: %d | SPD: %d\n",
-                e.getName(), e.getHp(), e.getAttack(), e.getDefend(), e.getSpeed());
+            System.out.printf("[Enemy] %s | HP: %d/%d | ATK: %d | DEF: %d | SPD: %d\n",
+                e.getName(), e.getHp(), e.getMaxHP(), e.getAttack(), e.getDefend(), e.getSpeed());
         }
         System.out.println("---------------------\n");
     }
@@ -47,7 +55,7 @@ public class GameCLI implements BattleUI {
     }
 
     public void notifyBackupSpawn(){
-        System.out.println("All initial enemies eliminated → Backup Spawn triggered!");
+        System.out.println("All initial enemies eliminated -> Backup Spawn triggered!");
     }
 
     public void displayVictoryScreen(int hp, int rounds) {
@@ -110,22 +118,27 @@ public class GameCLI implements BattleUI {
     }
 
     // chooose the character
-    public Player promptCharacterSelection(ArrayList<Player> templates) {
+    public Player promptCharacterSelection(ArrayList<Combatant> templates) {
         System.out.println("Select your character:");
         for (int i = 0; i < templates.size(); i++) {
-            Player p = templates.get(i);
+            Player p = (Player)templates.get(i);
             System.out.println((i + 1) + ". " + p.getName() + " " + p.getStatsSummary()); 
         }
         int choice = getValidInput(1, templates.size());
-        return templates.get(choice - 1); 
+        return (Player)templates.get(choice - 1); 
     }
 
     // choose the level
-    public LevelManagement promptDifficultySelection(ArrayList<LevelManagement> levels) {
+    public LevelManagement promptDifficultySelection(ArrayList<Combatant> templates, ArrayList<LevelManagement> levels) {
         System.out.println("Select Difficulty:");
         for (int i = 0; i < levels.size(); i++) {
             System.out.println((i + 1) + ". " + levels.get(i).getLevelDescription());
         } 
+        System.out.println("Enemy's attributes:");
+        for (int i = 0; i < templates.size(); i++) {
+            Enemy e = (Enemy)templates.get(i);
+            System.out.println("- " + e.getName() + " " + e.getStatsSummary()); 
+        }
         int num = getValidInput(1, levels.size());
         return levels.get(num - 1);
     }
@@ -139,14 +152,7 @@ public class GameCLI implements BattleUI {
         }
         return getValidInput(1, inventory.size()) - 1; // user only can choose from the inventor list
     }
-    // handle the item
-    private void handleItemSelection(UseItem useItem, Player player) {
-        ArrayList<Item> inventory = player.getInventory();
-        int itemIdx = promptItemSelection(inventory);
-        Item chosenItem = inventory.get(itemIdx);
-        useItem.setItem(chosenItem);
-    }
-
+    
     // Player decides action to take in their turn
     public Action promptPlayerActionSelection(Player player, ArrayList<Enemy> activeEnemies) {
         ArrayList<Action> actions = player.getAvailableActions();
@@ -165,7 +171,10 @@ public class GameCLI implements BattleUI {
         }
 
         if (selectedAction instanceof UseItem) {
-            handleItemSelection((UseItem) selectedAction, player);
+            ArrayList<Item> inventory = ((Player)player).getInventory();
+            int itemIdx = promptItemSelection(inventory); // asking user to choose item
+            Item chosenItem = inventory.get(itemIdx);
+            ((UseItem)selectedAction).setItem(chosenItem);
         }
 
         setupActionTargets(selectedAction, player, activeEnemies);
@@ -173,6 +182,7 @@ public class GameCLI implements BattleUI {
         return selectedAction;
     }
 
+    // matchìng the targettype
     private void setupActionTargets(Action action, Player player, ArrayList<Enemy> enemies) {
         action.clearTargets();
  
@@ -191,8 +201,8 @@ public class GameCLI implements BattleUI {
     }
 
     // enemy action selection
-    public Action promptEnemyActionSelection(Player player) {
-        Action action = new BasicAttack();
+    public Action promptEnemyActionSelection(Enemy actor, Player player) {
+        Action action = actor.getAvailableActions().get(0);
         action.addTarget(player);
         return action;
     }

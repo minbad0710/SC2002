@@ -2,11 +2,12 @@ package Entity.Action;
 
 import Entity.Combatant.*;
 import java.util.ArrayList;
+
 public abstract class Action {
     protected String name;
     protected String description;
-    protected ArrayList<Combatant> targets = new ArrayList<>();
-    protected String resultMessage;
+    protected ArrayList<Combatant> targets = new ArrayList<>(); // each action has a specific target set
+    protected String resultMessage; // display the action
 
     public abstract void execute(Combatant actor);
 
@@ -15,6 +16,7 @@ public abstract class Action {
     public String getName(){
         return this.name;
     }
+    
     public String getdescription(){
         return this.description;
     }
@@ -34,6 +36,7 @@ public abstract class Action {
     public void clearTargets(){
         this.targets.clear();
     }
-    public abstract TargetType getTargetType(Combatant actor);
+
+    public abstract TargetType getTargetType(Combatant actor); // each action has its target type
 
 }

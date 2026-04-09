@@ -6,14 +6,13 @@ import Entity.Combatant.Player.*;
 import java.util.ArrayList;
 
 public class UseItem extends Action{
-    private Item item;
+    private Item item; // the selected item for using
+    // Constructor
     public UseItem(){
         this.name = "Use Item";
         this.description = "Use item in the inventory list";
     }
-    public Item getItem(){
-        return this.item;
-    }
+    // set the item = the selected item in game CLI
     public void setItem(Item item){
         this.item = item;
     }
@@ -22,8 +21,8 @@ public class UseItem extends Action{
     public void execute(Combatant actor){
         if (actor instanceof Player){
             Player p = (Player) actor;
-            this.item.use(actor, targets);
-            p.removeItem(item);
+            this.item.use(actor, targets); // execute the "use" function in Item class
+            p.removeItem(item); // after using this item, removing it from the inventory list of player
             this.resultMessage = p.getName() + " uses " + item.getName() + ". " + item.getDescription();
         }
     }
@@ -32,7 +31,7 @@ public class UseItem extends Action{
     public boolean isAvailable(Combatant actor){
         Player p = (Player) actor;
         ArrayList<Item> items = p.getInventory();
-        return items.size() > 0;
+        return items.size() > 0; // the UseItem action can only be executeed if the player still has item to use
     }
 
     @Override

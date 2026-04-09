@@ -4,12 +4,12 @@ import Entity.Combatant.Combatant;
 import java.util.ArrayList;
 import Entity.Action.TargetType;
 public class Potion extends Item{
+    // Constructor
     public Potion(){
         this.name ="Potion";
         this.description = "Heal 100HP";
     }
     
-
     @Override
     public void use(Combatant actor, ArrayList <Combatant> targets){
         actor.heal(100);

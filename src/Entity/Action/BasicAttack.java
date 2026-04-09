@@ -1,10 +1,9 @@
 package Entity.Action;
 
-
-
 import Entity.Combatant.Combatant;
 
 public class BasicAttack extends Action {
+    // Constructor
     public BasicAttack(){
         this.name = "Basic Attack";
         this.description ="Attack targeted enemy";
@@ -12,20 +11,20 @@ public class BasicAttack extends Action {
 
     @Override
     public void execute(Combatant actor){
-        for (Combatant target: targets){
-            if (target == actor){continue;};
-            target.takeDamage(actor.getAttack());
-        };
-        this.resultMessage = actor.getName() + " attacks " + targets.get(0).getName() + " for " + actor.getAttack() + " damage.";
+        Combatant target = targets.get(0); // target on single enemy
+        target.takeDamage(actor.getAttack());
+        this.resultMessage = actor.getName() + " attacks " + targets.get(0).getName();
     }
 
     @Override
     public boolean isAvailable(Combatant actor){
-        return true; // check stunned in battle engine
+        return true; // combatants can always do basicattack unless they are not active
     }
 
+    @Override
     public TargetType getTargetType(Combatant actor) {
         return TargetType.SINGLE_ENEMY;
     }
 
+    
 }

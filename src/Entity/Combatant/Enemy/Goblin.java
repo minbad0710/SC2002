@@ -6,7 +6,7 @@ public class Goblin extends Enemy {
     private static final int SPEED = 25;
     private static final int ATTACK = 35;
     private static final int DEFEND = 15;
-
+    // Constructor
     public Goblin(String name){
         super(MAX_HP, SPEED, ATTACK, DEFEND);
         this.name = name;
