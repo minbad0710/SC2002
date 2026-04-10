@@ -20,6 +20,12 @@ public class PowerStone extends Item{
     }
 
     @Override
+    public String getMessage(Combatant actor, ArrayList<Combatant> targets, ArrayList<Integer> previousHp) {
+        SpecialSkill s = actor.getSpecialSkill();
+        return " -> " + s.getName() + " triggered -> " + s.getTargetString(actor, targets, previousHp) + " Cooldown unchanged -> " + actor.getCooldown() + " (Power Stone does not affect cooldown) | Power Stone consumed"; // the message after using this item, which is the same as the message after using the special skill, but with a note about cooldown
+    }
+
+    @Override
     public TargetType getTargetType(Combatant actor) {
         return actor.getSpecialSkill().getTargetType();
     }

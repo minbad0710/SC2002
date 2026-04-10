@@ -24,6 +24,11 @@ public class ShieldBash extends SpecialSkill{
     }
 
     @Override
+    public String getTargetString(Combatant actor, ArrayList <Combatant> combatants, ArrayList<Integer> previousHp) {
+        return combatants.get(0).getName() + ": HP: " + previousHp.get(0) + " -> " + combatants.get(0).getHp() + " (Damage: " + actor.getAttack() + " - " + combatants.get(0).getDefend() + " = " + Math.max(0, actor.getAttack() - combatants.get(0).getDefend()) + ")" + " | "+ combatants.get(0).getName() + " STUNNED (2 turns)";
+    }
+
+    @Override
     public TargetType getTargetType() {
         return TargetType.SINGLE_ENEMY;
     }

@@ -116,7 +116,8 @@ public class BattleEngine {
         Action action = input.promptActionSelection(c, player, activeEnemies);
         // after choosing action, exceute it
         action.execute(c);
-        output.displayTurnResult(action.getResultMessage()); 
+        output.displayTurnResult(action.getResultMessage()); // display the result of the action after executing it
+        action.clearTargets(); // clear the target list after executing the action to avoid confusion in the next turn
     }
 
     // method for backup spawn 

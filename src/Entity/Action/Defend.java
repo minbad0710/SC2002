@@ -13,8 +13,9 @@ public class Defend extends Action{
     @Override
     public void execute(Combatant actor){
         DefendEffect d = new DefendEffect();
+        int previousDefend = actor.getDefend();
         d.applyEffect(actor, targets);
-        this.resultMessage = actor.getName() + " defends and increases defense by 10 for the current and next round.";
+        this.resultMessage = actor.getName() + " -> Defend:  " + previousDefend + " -> " + actor.getDefend();
     }
 
     @Override

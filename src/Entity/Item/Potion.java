@@ -16,6 +16,11 @@ public class Potion extends Item{
     }
 
     @Override
+    public String getMessage(Combatant actor, ArrayList<Combatant> targets, ArrayList<Integer> previousHp) {
+        return ": HP: " + previousHp.get(0) + " -> " + actor.getHp() + " (+100) | Potion consumed"; // the message after using this item, which is the hp change of player
+    }
+
+    @Override
     public TargetType getTargetType(Combatant actor) {
         return TargetType.SELF;
     }

@@ -12,8 +12,13 @@ public class BasicAttack extends Action {
     @Override
     public void execute(Combatant actor){
         Combatant target = targets.get(0); // target on single enemy
+        int previousHp = target.getHp();
         target.takeDamage(actor.getAttack());
-        this.resultMessage = actor.getName() + " attacks " + targets.get(0).getName();
+        if (actor.getAttack() == 0) {
+            this.resultMessage = actor.getName() + " -> " + this.name + " -> " + target.getName() + ": HP: " + previousHp + " -> " + target.getHp() + " (Damage: 0) (Smoke Bomb active)";
+        } else {
+        this.resultMessage = actor.getName() + " -> " + this.name + " -> " + target.getName() + ": HP: " + previousHp + " -> " + target.getHp() + " (Damage: " + actor.getAttack() + " - " + target.getDefend() + " = " + Math.max(0, actor.getAttack() - target.getDefend()) + ")";
+        }
     }
 
     @Override

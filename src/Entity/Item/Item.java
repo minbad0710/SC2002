@@ -16,6 +16,7 @@ public abstract class Item {
         return description;
     }
 
+    public abstract String getMessage(Combatant actor, ArrayList<Combatant> targets, ArrayList<Integer> previousHp); // the message after using this item
     public void setName(String name) {
         this.name = name; // change the name when player chose two similar items
     }

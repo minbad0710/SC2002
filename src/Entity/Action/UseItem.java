@@ -17,13 +17,18 @@ public class UseItem extends Action{
         this.item = item;
     }
 
+
     @Override
     public void execute(Combatant actor){
         if (actor instanceof Player){
             Player p = (Player) actor;
+            ArrayList<Integer> previousHp = new ArrayList<>(); // get the hp before using item for later use in output
+            for (Combatant target : targets) {
+                previousHp.add(target.getHp());
+            }
             this.item.use(actor, targets); // execute the "use" function in Item class
             p.removeItem(item); // after using this item, removing it from the inventory list of player
-            this.resultMessage = p.getName() + " uses " + item.getName() + ". " + item.getDescription();
+            this.resultMessage = p.getName() + " -> Item -> "+ item.getName() + " used " + item.getMessage(actor, targets, previousHp); // the message after using item
         }
     }
 

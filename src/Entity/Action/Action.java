@@ -16,6 +16,10 @@ public abstract class Action {
     public String getName(){
         return this.name;
     }
+
+    public ArrayList<Combatant> getTargets() {
+        return this.targets;
+    }
     
     public String getdescription(){
         return this.description;

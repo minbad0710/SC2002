@@ -14,6 +14,11 @@ public class SmokeBomb extends Item{
     }
 
     @Override
+    public String getMessage(Combatant actor, ArrayList<Combatant> targets, ArrayList<Integer> previousHp) {
+        return ": Enemy attacks do 0 damage in the current turn and the next turn";
+    }
+
+    @Override
     public void use(Combatant actor, ArrayList <Combatant> targets){
         StatusEffect e = new SmokeBombEffect();
         e.applyEffect(actor, targets);
