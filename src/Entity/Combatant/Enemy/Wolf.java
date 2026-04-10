@@ -21,11 +21,11 @@ public class Wolf extends Enemy {
         }
     }
 
-
     @Override
     public void resetAttack() {
         this.setAttack(ATTACK);
     }
+    
     @Override
     public void resetDefend() {
         this.setDefend(DEFEND);

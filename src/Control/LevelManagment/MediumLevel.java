@@ -28,4 +28,15 @@ public class MediumLevel extends LevelManagement{
         backups.add(new Wolf("Wolf B"));
         return backups;
     }
+
+    @Override
+    public String getLevelDescription() {
+        return "Medium (1 Goblin, 1 Wolf + 2 Wolf Backup)";
+    }
+
+    @Override
+    public LevelManagement cloneLevel() {
+        return new MediumLevel();
+    }
+    
 }

@@ -10,5 +10,9 @@ public abstract class LevelManagement {
     public abstract void changeBackupSpawnStatus(boolean status);
 
     public abstract ArrayList<Enemy> getBackupSpawns();
+
+    public abstract String getLevelDescription();
+
+    public abstract LevelManagement cloneLevel();
     
 }

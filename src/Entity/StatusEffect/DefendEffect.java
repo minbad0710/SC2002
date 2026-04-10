@@ -7,13 +7,12 @@ public class DefendEffect extends StatusEffect{
     final private int BOOST = 10;
 
     @Override
-    public void applyEffect(ArrayList <Combatant> characters) {
+    public void applyEffect(Combatant user, ArrayList <Combatant> characters) {
         for (Combatant character: characters){
-        character.setDefend(character.getDefend() + BOOST);
+            character.setDefend(character.getDefend() + BOOST);
+            character.addNewEffect(this);
         };
-        super.applyEffect(characters);
     }
-
 
     @Override
     public void removeEffect(Combatant character){

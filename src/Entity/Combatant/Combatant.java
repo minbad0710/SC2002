@@ -3,7 +3,7 @@ package Entity.Combatant;
 import Entity.SpecialSkill.SpecialSkill;
 import Entity.StatusEffect.*;
 import java.util.ArrayList;
-
+import Entity.Action.*;
 public abstract class Combatant {
     /*Variable */
     protected int hp;
@@ -16,6 +16,7 @@ public abstract class Combatant {
     protected int cooldown; /*True mean unavailable */
     protected ArrayList <StatusEffect> statusEffects;
     protected SpecialSkill specialSkill;
+    protected ArrayList<Action> availableActions = new ArrayList<>();
 
     /*Getter & setter */
     public int getMaxHP(){
@@ -55,17 +56,9 @@ public abstract class Combatant {
 
     public abstract void heal(int hp);
 
-    
+    // Status Effect
     public void addNewEffect(StatusEffect effect){
         this.statusEffects.add(effect);
-    }
-
-    public ArrayList <StatusEffect> getEffectList(){
-        return statusEffects;
-    }
-
-    public SpecialSkill getSpecialSkill(){
-        return specialSkill;
     }
 
     public void removeStatusEffect(StatusEffect effect){
@@ -73,10 +66,25 @@ public abstract class Combatant {
         effect = null;
     }
 
+    public ArrayList <StatusEffect> getEffectList(){
+        return statusEffects;
+    }
+
+    // Each combatant has their special skill
+    public SpecialSkill getSpecialSkill(){
+        return specialSkill;
+    }
+
+    // Check the combatatnt is alive or not
     public boolean isAlive(){
         return this.getHp() >0;
     }
 
+    public String notAlive(){
+        return this.name + " is ELIMINATED";
+    }
+    
+    // Active or not
     public void setActive(boolean active){
         this.active = active;
     }
@@ -84,7 +92,11 @@ public abstract class Combatant {
     public boolean isActive(){
         return this.active;
     }
-
+    public String notActive(){
+        return this.name + " is STUNNED! Turn skipped.";
+    }
+    
+    // Cool down for special skill
     public void setCooldown(int n){
         this.cooldown = n;
     }
@@ -96,6 +108,10 @@ public abstract class Combatant {
     public void reduceCooldown(){
         if (this.cooldown > 0)
         {this.cooldown--;};
+    }
+
+    public ArrayList<Action> getAvailableActions() {
+        return this.availableActions;
     }
 
     abstract public void resetDefend();
@@ -110,6 +126,10 @@ public abstract class Combatant {
         this.statusEffects = new ArrayList<StatusEffect>();
         this.active = true;
         this.cooldown = 0;
+    }
+
+    public String getStatsSummary() {
+        return String.format("(HP: %d, ATK: %d, DEF: %d, SPD: %d)", this.MaxHP, this.attack, this.defend, this.speed);
     }
     
     

@@ -30,4 +30,14 @@ public class HardLevel extends LevelManagement{
         backups.add(new Wolf("Wolf B"));
         return backups;
     }
+
+    @Override
+    public String getLevelDescription() {
+        return "Hard (2 Goblins + 1 Goblin, 2 Wolf Backup)";
+    }
+
+    @Override
+    public LevelManagement cloneLevel() {
+        return new HardLevel();
+    }
 }

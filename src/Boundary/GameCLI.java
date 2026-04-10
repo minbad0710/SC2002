@@ -1,16 +1,17 @@
 package Boundary;
 
+import Entity.Action.UseItem;
 import Entity.Combatant.Combatant;
 import Entity.Combatant.Enemy.Enemy;
+import Entity.Combatant.Player.Player;
 import Entity.Item.Item;
-import Entity.Item.Potion;
-import Entity.Item.PowerStone;
-import Entity.Item.SmokeBomb;
-
+import Entity.Action.Action;
 import java.util.ArrayList;
 import java.util.Scanner;
+import Control.LevelManagment.LevelManagement;
+import Entity.Action.TargetType;
 
-public class GameCLI {
+public class GameCLI implements BattleInPutUI, BattleOutPutUI{
     private Scanner scanner;
 
     public GameCLI() {
@@ -22,86 +23,164 @@ public class GameCLI {
         System.out.println("   WELCOME TO TURN-BASED COMBAT ARENA   ");
         System.out.println("========================================\n");
     }
-
-    public void displayBattleStatus(ArrayList<Combatant> players, ArrayList<Enemy> enemies) {
-        System.out.println("\n--- BATTLE STATUS ---");
-        for (Combatant p : players) {
-            System.out.printf("[Player] %s | HP: %d/%d | ATK: %d | DEF: %d | SPD: %d\n",
+    public void displayStartofEachRound(int round){
+        System.out.println("-----------Round " + round + " starts!-----------");
+    }
+    public void displayBattleStatus(ArrayList <Player> players, ArrayList<Enemy> enemies, int currentRound) {
+        System.out.println("\nEnd of Round " + currentRound + ":");
+        for (Player p : players) {
+            System.out.printf("[Player] %s | HP: %d/%d | ATK: %d | DEF: %d | SPD: %d | ",
                 p.getName(), p.getHp(), p.getMaxHP(), p.getAttack(), p.getDefend(), p.getSpeed());
+            ArrayList<Item> currentlist = new ArrayList<>(p.getInventory());
+            ArrayList<Item> initiallist = p.getinitiallist();
+
+            for (int i = 0; i < initiallist.size(); i++) {
+                Item initial_item = initiallist.get(i);
+                int status = 0;
+
+                for (int j = 0; j < currentlist.size(); j++) {
+                    if (currentlist.get(j).getName().equals(initial_item.getName())) {
+                        status += 1;
+                    }
+                }
+                System.out.print(initial_item.getName() + ": " + status);
+                System.out.print(" | ");
+            }
+            System.out.printf("Special Skills Cooldown: %d\n", p.getCooldown());
         }
         System.out.println("---------------------");
         for (Enemy e : enemies) {
-            System.out.printf("[Enemy] %s | HP: %d | ATK: %d | DEF: %d | SPD: %d\n",
-                e.getName(), e.getHp(), e.getAttack(), e.getDefend(), e.getSpeed());
+            System.out.printf("[Enemy] %s | HP: %d/%d | ATK: %d | DEF: %d | SPD: %d\n",
+                e.getName(), e.getHp(), e.getMaxHP(), e.getAttack(), e.getDefend(), e.getSpeed());
         }
         System.out.println("---------------------\n");
+    }
+
+    public void displayTurnOrder(ArrayList<Combatant> turnOrder){
+        System.out.print("\nTurn Order: ");
+        for (int i = 0; i < turnOrder.size(); i++) {
+            Combatant c = turnOrder.get(i);
+            System.out.print(c.getName() + " (SPD " + c.getSpeed() + ")");
+            if (i < turnOrder.size() - 1) {
+                System.out.print(" -> ");
+            }
+        }
+        System.out.println("\n");
     }
 
     public void displayTurnResult(String message) {
         System.out.println(">> " + message);
     }
 
-    public void displayVictoryScreen(int hp, int rounds) {
-        System.out.println("\n****************************************");
-        System.out.println("      CONGRATULATIONS! VICTORY!         ");
-        System.out.println("****************************************");
+    public void notifyBackupSpawn(){
+        System.out.println("All initial enemies eliminated -> Backup Spawn triggered!");
+    }
+
+    public void displayVictoryScreen(Player p, int rounds) {
+        System.out.println("\n***************************************************************");
+        System.out.println("      Congratulations, you have deffeated all your enemies.      ");
+        System.out.println("***************************************************************");
         System.out.println("Statistics:");
-        System.out.println("- Remaining HP: " + hp);
+        System.out.println("- Remaining HP: " + p.getHp());
         System.out.println("- Total Rounds: " + rounds);
-        System.out.println("****************************************\n");
+        ArrayList<Item> currentlist = new ArrayList<>(p.getInventory());
+        ArrayList<Item> initiallist = p.getinitiallist();
+
+        System.out.print("- Items: ");
+        for (int i = 0; i < initiallist.size(); i++) {
+            Item initial_item = initiallist.get(i);
+            int status = 0;
+
+            for (int j = 0; j < currentlist.size(); j++) {
+                if (currentlist.get(j).getName().equals(initial_item.getName())) {
+                    status += 1;
+                }
+            }
+
+            System.out.print(initial_item.getName() + ": " + status);
+            if (i < initiallist.size() - 1) {
+                System.out.print(" | "); // the last item won't need this
+            }
+        }
     }
 
     public void displayDefeatScreen(int enemiesLeft, int rounds) {
-        System.out.println("\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-        System.out.println("      DEFEATED. DON'T GIVE UP!          ");
-        System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+        System.out.println("\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+        System.out.println("      Defeated. Don't give up, try again!          ");
+        System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
         System.out.println("Statistics:");
         System.out.println("- Enemies remaining: " + enemiesLeft);
         System.out.println("- Total Rounds Survived: " + rounds);
-        System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n");
+        System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n");
     }
-    /*asking user to choose*/
-    // choose a list of inventory for player at the beginning of the game
-    public ArrayList<Item> promptInitialItemSelection() {
-        ArrayList<Item> selectedItems = new ArrayList<>();
-    
-        System.out.println("\n--- INITIAL ITEM SELECTION --- \n");
-        System.out.println("You can choose 2 items: \n");
-        Item [] available = {new Potion(), new PowerStone(), new SmokeBomb()};
-        
-        while (selectedItems.size() < 2) {
-            System.out.println("Available Items:\n");
-            System.out.println("1. Potion\n");
-            System.out.println("2. Power Stone\n");
-            System.out.println("3. Smoke Bomb\n");
-            
 
-            int choice = getValidInput(1, 3);
-            Item chosen = available[choice - 1];
-            if (selectedItems.size() > 0 && chosen.getName() == selectedItems.get(0).getName()) { // check if the item is already selected
-                selectedItems.get(0).setName(chosen.getName() + " A");
-                chosen.setName(chosen.getName() + " B");
-            };
+    public void displayGameOverMessage(int choice){
+        switch(choice) {
+            case 1:
+                System.out.println("Restarting game with the same settings...");
+                break;
+            case 2:
+                System.out.println("Play Again. Returning to home screen...");
+                break;
+            case 3:
+                System.out.println("Exiting game. Goodbye!");
+                break;
+        }
+    }
+
+    // choose a list of inventory for player at the beginning of the game
+    public ArrayList<Item> promptInitialItemSelection(ArrayList<Item> availableItems) {
+        ArrayList<Item> selectedItems = new ArrayList<>();
+        System.out.println("\n--- INITIAL ITEM SELECTION ---");
+        System.out.println("You can choose 2 items:\n");
+
+        while (selectedItems.size() < 2) {
+            System.out.println("Available Items:");
+            for (int i = 0; i < availableItems.size(); i++) {
+                System.out.println((i + 1) + ". " + availableItems.get(i).getName());
+            }
+
+            int choice = getValidInput(1, availableItems.size());
+            Item chosen = availableItems.get(choice - 1);
+
+            // if (!selectedItems.isEmpty() && chosen.getName().equals(selectedItems.get(0).getName())) {
+            //     selectedItems.get(0).setName(chosen.getName() + " A");
+            //     chosen.setName(chosen.getName() + " B");
+            // }
+
             selectedItems.add(chosen);
-            System.out.println("Added" + chosen.getName() + " to inventory.");
+            System.out.println("Added " + chosen.getName() + " to inventory.");
+            System.out.println();
         }
         return selectedItems;
     }
+
     // chooose the character
-    public int promptCharacterSelection() {
+    public Player promptCharacterSelection(ArrayList<Combatant> templates) {
         System.out.println("Select your character:");
-        System.out.println("1. Warrior (HP: 260, ATK: 40, DEF: 20, SPD: 30)");
-        System.out.println("2. Wizard  (HP: 200, ATK: 50, DEF: 10, SPD: 20)"); 
-        return getValidInput(1, 2);
+        for (int i = 0; i < templates.size(); i++) {
+            Player p = (Player)templates.get(i);
+            System.out.println((i + 1) + ". " + p.getName() + " " + p.getStatsSummary()); 
+        }
+        int choice = getValidInput(1, templates.size());
+        return (Player)templates.get(choice - 1); 
     }
+
     // choose the level
-    public int promptDifficultySelection() {
+    public LevelManagement promptDifficultySelection(ArrayList<Combatant> templates, ArrayList<LevelManagement> levels) {
         System.out.println("Select Difficulty:");
-        System.out.println("1. Easy   (3 Goblins)");
-        System.out.println("2. Medium (1 Goblin, 1 Wolf + 2 Wolf Backup)");
-        System.out.println("3. Hard   (2 Goblins + 1 Goblin, 2 Wolf Backup)"); 
-        return getValidInput(1, 3);
+        for (int i = 0; i < levels.size(); i++) {
+            System.out.println((i + 1) + ". " + levels.get(i).getLevelDescription());
+        } 
+        System.out.println("\nEnemy's attributes:");
+        for (int i = 0; i < templates.size(); i++) {
+            Enemy e = (Enemy)templates.get(i);
+            System.out.println("- " + e.getName() + " " + e.getStatsSummary()); 
+        }
+        int num = getValidInput(1, levels.size());
+        return levels.get(num - 1);
     }
+
     // asking user to choose item for using purpose
     public int promptItemSelection(ArrayList<Item> inventory) {
         System.out.println("Select an Item to use:");
@@ -111,15 +190,60 @@ public class GameCLI {
         }
         return getValidInput(1, inventory.size()) - 1; // user only can choose from the inventor list
     }
-    // player decides action to take in their turn
-    public int promptActionSelection(int maxOption) {
-        System.out.println("Your turn! Choose action:");
-        System.out.println("1. Basic Attack");
-        System.out.println("2. Defend");
-        System.out.println("3. Use Item");
-        System.out.println("4. Special Skill");
-        return getValidInput(1, maxOption);
+    // Combatant decides action to take in their turn
+    public Action promptActionSelection(Combatant actor, Player player, ArrayList<Enemy> activeEnemies){
+        if(actor instanceof Player){
+            ArrayList<Action> actions = ((Player)actor).getAvailableActions();
+        
+            System.out.println("\n--- " + actor.getName() + "'s Turn! Choose action: ---");
+            for (int i = 0; i < actions.size(); i++) {
+                System.out.println((i + 1) + ". " + actions.get(i).getName());
+            }
+
+            int choice = getValidInput(1, actions.size());
+            Action selectedAction = actions.get(choice - 1);
+
+            if (!selectedAction.isAvailable((Player)actor)) {
+                System.out.println(">> " + selectedAction.getName() + " is not available! Please choose again.");
+                return promptActionSelection(actor, player, activeEnemies);
+            }
+
+            if (selectedAction instanceof UseItem) {
+                ArrayList<Item> inventory = ((Player)actor).getInventory();
+                int itemIdx = promptItemSelection(inventory); // asking user to choose item
+                Item chosenItem = inventory.get(itemIdx);
+                ((UseItem)selectedAction).setItem(chosenItem);
+            }
+
+            setupActionTargets(selectedAction, player, activeEnemies);
+
+            return selectedAction;
+        }
+        else{
+            Action action = ((Enemy)actor).getAvailableActions().get(0);
+            action.addTarget(player);
+            return action;
+        }
     }
+
+    // matchìng the targettype
+    private void setupActionTargets(Action action, Player player, ArrayList<Enemy> enemies) {
+        action.clearTargets();
+ 
+        TargetType type = action.getTargetType(player); 
+
+        if (type == TargetType.SINGLE_ENEMY) {
+            int idx = promptTargetSelection(enemies);
+            action.addTarget(enemies.get(idx));
+        } 
+        else if (type == TargetType.ALL_ENEMIES) {
+            action.setTargets(new ArrayList<Combatant>(enemies));
+        } 
+        else if (type == TargetType.SELF) {
+            action.addTarget(player);
+        }
+    }
+
     // choose target for attack and special skill
     public int promptTargetSelection(ArrayList<Enemy> targets) {
         System.out.println("Select target:");
@@ -128,6 +252,17 @@ public class GameCLI {
         }
         return getValidInput(1, targets.size()) - 1;
     }
+
+    // when the game is over
+    public int promptGameOverOptions() {
+        System.out.println("\n--- WHAT WOULD YOU LIKE TO DO? ---");
+        System.out.println("1. Replay with the same settings");
+        System.out.println("2. Start a new game");
+        System.out.println("3. Exit");
+        
+        return getValidInput(1, 3);
+    }
+
     //method asking user until give an available input
     private int getValidInput(int min, int max) {
         int input;
