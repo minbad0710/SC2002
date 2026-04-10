@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
-import Boundary.BattleUI;
+import Boundary.BattleInPutUI;
+import Boundary.BattleOutPutUI;
 import Boundary.GameCLI;
 import Control.BattleEngine;
 import Control.LevelManagment.*;
@@ -16,7 +17,8 @@ import Entity.Item.SmokeBomb;
 
 public class Main{
     public static void main(String[] args) {
-        BattleUI ui = new GameCLI(); 
+        BattleInPutUI input = new GameCLI(); 
+        BattleOutPutUI output = new GameCLI(); 
         boolean running = true;
 
         ArrayList<Combatant> playerTemplates = new ArrayList<>();
@@ -38,10 +40,10 @@ public class Main{
         itemPool.add(new SmokeBomb());
 
         while(running){
-            Player selectedTemplate = ui.promptCharacterSelection(playerTemplates);
+            Player selectedTemplate = input.promptCharacterSelection(playerTemplates);
         
-            ArrayList<Item> initialItems = ui.promptInitialItemSelection(itemPool);
-            LevelManagement selectedLevel = ui.promptDifficultySelection(enemyTemplates, levelTemplates);
+            ArrayList<Item> initialItems = input.promptInitialItemSelection(itemPool);
+            LevelManagement selectedLevel = input.promptDifficultySelection(enemyTemplates, levelTemplates);
             
             boolean matchRunning = true;
             while(matchRunning) {
@@ -51,20 +53,17 @@ public class Main{
                 LevelManagement current_level = selectedLevel.cloneLevel();
                 
                 TurnOrderStrategy turnStrategy = new SpeedOrderStrategy();
-                BattleEngine engine = new BattleEngine(player, current_level, turnStrategy, ui);
+                BattleEngine engine = new BattleEngine(player, current_level, turnStrategy, input, output);
                 
                 int result = engine.startBattle();
-                
+                output.displayGameOverMessage(result);
                 switch (result) {
                     case 1: // play a new game with the same game settings
-                        ui.displayRestartMessage();
                         break;
                     case 2: // play a new game with new game settings
-                        ui.displayReturnHomeMessage();
                         matchRunning = false;
                         break;
                     case 3: // Exit
-                        ui.displayExitMessage();
                         matchRunning = false;
                         running = false;
                         break;

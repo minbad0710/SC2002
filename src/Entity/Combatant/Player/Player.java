@@ -7,6 +7,7 @@ import Entity.Item.*;
 import Entity.Action.*;
 public abstract class Player extends Combatant{
     ArrayList <Item> inventory = new ArrayList<Item>();
+    ArrayList <Item> initialitemlist = new ArrayList<Item>();
     public void removeItem(Item item){
         this.inventory.remove(item);
     }
@@ -19,13 +20,23 @@ public abstract class Player extends Combatant{
     }
 
     public void setInventory(ArrayList<Item> inventory){
-        this.inventory = inventory; // this one will match with the promptInitialItemSelection() in GameCLI when we connect them in the main
-    }
-    
-    public ArrayList<Item> getInventory(){
-        return inventory;
+        this.inventory = inventory; 
+        ArrayList<Item> tempList = new ArrayList<>(inventory);
+        this.initialitemlist = new ArrayList<>();
+        for (Item item : tempList) {
+            if (!initialitemlist.contains(item)) {
+                initialitemlist.add(item);
+            }
+        }
     }
 
+    public ArrayList<Item> getInventory(){
+        return this.inventory;
+    }
+
+    public ArrayList<Item> getinitiallist(){
+        return this.initialitemlist;
+    }
 
     public abstract Player clonePlayer();
 

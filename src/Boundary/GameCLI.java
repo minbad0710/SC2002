@@ -11,7 +11,7 @@ import java.util.Scanner;
 import Control.LevelManagment.LevelManagement;
 import Entity.Action.TargetType;
 
-public class GameCLI implements BattleUI {
+public class GameCLI implements BattleInPutUI, BattleOutPutUI{
     private Scanner scanner;
 
     public GameCLI() {
@@ -26,19 +26,25 @@ public class GameCLI implements BattleUI {
     public void displayStartofEachRound(int round){
         System.out.println("-----------Round " + round + " starts!-----------");
     }
-    public void displayBattleStatus(ArrayList <Player> players, ArrayList<Enemy> enemies) {
-        System.out.println("\n--- BATTLE STATUS ---");
+    public void displayBattleStatus(ArrayList <Player> players, ArrayList<Enemy> enemies, int currentRound) {
+        System.out.println("\nEnd of Round " + currentRound + ":");
         for (Player p : players) {
-            System.out.printf("[Player] %s | HP: %d/%d | ATK: %d | DEF: %d | SPD: %d |",
+            System.out.printf("[Player] %s | HP: %d/%d | ATK: %d | DEF: %d | SPD: %d | ",
                 p.getName(), p.getHp(), p.getMaxHP(), p.getAttack(), p.getDefend(), p.getSpeed());
-            if (p.getInventory().size() > 0) {
-                System.out.printf("The invetory list: ");
-                for(int i = 0; i < p.getInventory().size(); i++){
-                    if( i != p.getInventory().size() - 1)
-                        System.out.printf("%s, ", p.getInventory().get(i).getName());
-                    else
-                        System.out.printf("%s |", p.getInventory().get(i).getName());
+            ArrayList<Item> currentlist = new ArrayList<>(p.getInventory());
+            ArrayList<Item> initiallist = p.getinitiallist();
+
+            for (int i = 0; i < initiallist.size(); i++) {
+                Item initial_item = initiallist.get(i);
+                int status = 0;
+
+                for (int j = 0; j < currentlist.size(); j++) {
+                    if (currentlist.get(j).getName().equals(initial_item.getName())) {
+                        status += 1;
+                    }
                 }
+                System.out.print(initial_item.getName() + ": " + status);
+                System.out.print(" | ");
             }
             System.out.printf("Special Skills Cooldown: %d\n", p.getCooldown());
         }
@@ -50,6 +56,18 @@ public class GameCLI implements BattleUI {
         System.out.println("---------------------\n");
     }
 
+    public void displayTurnOrder(ArrayList<Combatant> turnOrder){
+        System.out.print("\nTurn Order: ");
+        for (int i = 0; i < turnOrder.size(); i++) {
+            Combatant c = turnOrder.get(i);
+            System.out.print(c.getName() + " (SPD " + c.getSpeed() + ")");
+            if (i < turnOrder.size() - 1) {
+                System.out.print(" -> ");
+            }
+        }
+        System.out.println("\n");
+    }
+
     public void displayTurnResult(String message) {
         System.out.println(">> " + message);
     }
@@ -58,14 +76,32 @@ public class GameCLI implements BattleUI {
         System.out.println("All initial enemies eliminated -> Backup Spawn triggered!");
     }
 
-    public void displayVictoryScreen(int hp, int rounds) {
+    public void displayVictoryScreen(Player p, int rounds) {
         System.out.println("\n***************************************************************");
         System.out.println("      Congratulations, you have deffeated all your enemies.      ");
         System.out.println("***************************************************************");
         System.out.println("Statistics:");
-        System.out.println("- Remaining HP: " + hp);
+        System.out.println("- Remaining HP: " + p.getHp());
         System.out.println("- Total Rounds: " + rounds);
-        System.out.println("***************************************************************\n");
+        ArrayList<Item> currentlist = new ArrayList<>(p.getInventory());
+        ArrayList<Item> initiallist = p.getinitiallist();
+
+        System.out.print("- Items: ");
+        for (int i = 0; i < initiallist.size(); i++) {
+            Item initial_item = initiallist.get(i);
+            int status = 0;
+
+            for (int j = 0; j < currentlist.size(); j++) {
+                if (currentlist.get(j).getName().equals(initial_item.getName())) {
+                    status += 1;
+                }
+            }
+
+            System.out.print(initial_item.getName() + ": " + status);
+            if (i < initiallist.size() - 1) {
+                System.out.print(" | "); // the last item won't need this
+            }
+        }
     }
 
     public void displayDefeatScreen(int enemiesLeft, int rounds) {
@@ -78,19 +114,20 @@ public class GameCLI implements BattleUI {
         System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n");
     }
 
-    public void displayRestartMessage() {
-        System.out.println("Restarting game with the same settings...");
+    public void displayGameOverMessage(int choice){
+        switch(choice) {
+            case 1:
+                System.out.println("Restarting game with the same settings...");
+                break;
+            case 2:
+                System.out.println("Play Again. Returning to home screen...");
+                break;
+            case 3:
+                System.out.println("Exiting game. Goodbye!");
+                break;
+        }
     }
 
-    public void displayReturnHomeMessage() {
-        System.out.println("Play Again. Returning to home screen...");
-    }
-
-    public void displayExitMessage() {
-        System.out.println("Exiting game. Goodbye!");
-    }
-
-    /*asking user to choose*/
     // choose a list of inventory for player at the beginning of the game
     public ArrayList<Item> promptInitialItemSelection(ArrayList<Item> availableItems) {
         ArrayList<Item> selectedItems = new ArrayList<>();
@@ -106,13 +143,14 @@ public class GameCLI implements BattleUI {
             int choice = getValidInput(1, availableItems.size());
             Item chosen = availableItems.get(choice - 1);
 
-            if (!selectedItems.isEmpty() && chosen.getName().equals(selectedItems.get(0).getName())) {
-                selectedItems.get(0).setName(chosen.getName() + " A");
-                chosen.setName(chosen.getName() + " B");
-            }
+            // if (!selectedItems.isEmpty() && chosen.getName().equals(selectedItems.get(0).getName())) {
+            //     selectedItems.get(0).setName(chosen.getName() + " A");
+            //     chosen.setName(chosen.getName() + " B");
+            // }
 
             selectedItems.add(chosen);
             System.out.println("Added " + chosen.getName() + " to inventory.");
+            System.out.println();
         }
         return selectedItems;
     }
@@ -134,7 +172,7 @@ public class GameCLI implements BattleUI {
         for (int i = 0; i < levels.size(); i++) {
             System.out.println((i + 1) + ". " + levels.get(i).getLevelDescription());
         } 
-        System.out.println("Enemy's attributes:");
+        System.out.println("\nEnemy's attributes:");
         for (int i = 0; i < templates.size(); i++) {
             Enemy e = (Enemy)templates.get(i);
             System.out.println("- " + e.getName() + " " + e.getStatsSummary()); 
@@ -152,34 +190,40 @@ public class GameCLI implements BattleUI {
         }
         return getValidInput(1, inventory.size()) - 1; // user only can choose from the inventor list
     }
-    
-    // Player decides action to take in their turn
-    public Action promptPlayerActionSelection(Player player, ArrayList<Enemy> activeEnemies) {
-        ArrayList<Action> actions = player.getAvailableActions();
+    // Combatant decides action to take in their turn
+    public Action promptActionSelection(Combatant actor, Player player, ArrayList<Enemy> activeEnemies){
+        if(actor instanceof Player){
+            ArrayList<Action> actions = ((Player)actor).getAvailableActions();
         
-        System.out.println("\n--- " + player.getName() + "'s Turn! Choose action: ---");
-        for (int i = 0; i < actions.size(); i++) {
-            System.out.println((i + 1) + ". " + actions.get(i).getName());
+            System.out.println("\n--- " + actor.getName() + "'s Turn! Choose action: ---");
+            for (int i = 0; i < actions.size(); i++) {
+                System.out.println((i + 1) + ". " + actions.get(i).getName());
+            }
+
+            int choice = getValidInput(1, actions.size());
+            Action selectedAction = actions.get(choice - 1);
+
+            if (!selectedAction.isAvailable((Player)actor)) {
+                System.out.println(">> " + selectedAction.getName() + " is not available! Please choose again.");
+                return promptActionSelection(actor, player, activeEnemies);
+            }
+
+            if (selectedAction instanceof UseItem) {
+                ArrayList<Item> inventory = ((Player)actor).getInventory();
+                int itemIdx = promptItemSelection(inventory); // asking user to choose item
+                Item chosenItem = inventory.get(itemIdx);
+                ((UseItem)selectedAction).setItem(chosenItem);
+            }
+
+            setupActionTargets(selectedAction, player, activeEnemies);
+
+            return selectedAction;
         }
-
-        int choice = getValidInput(1, actions.size());
-        Action selectedAction = actions.get(choice - 1);
-
-        if (!selectedAction.isAvailable(player)) {
-            System.out.println(">> " + selectedAction.getName() + " is not available! Please choose again.");
-            return promptPlayerActionSelection(player, activeEnemies);
+        else{
+            Action action = ((Enemy)actor).getAvailableActions().get(0);
+            action.addTarget(player);
+            return action;
         }
-
-        if (selectedAction instanceof UseItem) {
-            ArrayList<Item> inventory = ((Player)player).getInventory();
-            int itemIdx = promptItemSelection(inventory); // asking user to choose item
-            Item chosenItem = inventory.get(itemIdx);
-            ((UseItem)selectedAction).setItem(chosenItem);
-        }
-
-        setupActionTargets(selectedAction, player, activeEnemies);
-
-        return selectedAction;
     }
 
     // matchìng the targettype
@@ -198,13 +242,6 @@ public class GameCLI implements BattleUI {
         else if (type == TargetType.SELF) {
             action.addTarget(player);
         }
-    }
-
-    // enemy action selection
-    public Action promptEnemyActionSelection(Enemy actor, Player player) {
-        Action action = actor.getAvailableActions().get(0);
-        action.addTarget(player);
-        return action;
     }
 
     // choose target for attack and special skill

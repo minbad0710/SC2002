@@ -6,7 +6,8 @@ import Entity.Combatant.Player.Player;
 import Entity.StatusEffect.StatusEffect;
 import Entity.Action.Action;
 import Control.LevelManagment.LevelManagement;
-import Boundary.BattleUI;
+import Boundary.BattleOutPutUI;
+import Boundary.BattleInPutUI;
 import java.util.ArrayList;
 import Control.TurnOrderStrategy.TurnOrderStrategy;
 
@@ -16,37 +17,37 @@ public class BattleEngine {
     private LevelManagement level;
     private TurnOrderStrategy turnStrategy;
     private int currentRound = 0;
-    private BattleUI ui;
+    private BattleInPutUI input;
+    private BattleOutPutUI output;
 
-    public BattleEngine(Player player, LevelManagement level, TurnOrderStrategy strategy, BattleUI ui) {
+    public BattleEngine(Player player, LevelManagement level, TurnOrderStrategy strategy, BattleInPutUI input, BattleOutPutUI output) {
         this.player = player; // this will connect with the promptCharacterSelection() in GameCLI when we connect them in the main
         this.level = level; // this will connect with the promptDifficultySelection() in GameCLI when we connect them in the main
         this.turnStrategy = strategy; // this will be the speed strategy
-        this.ui = ui;
+        this.input = input;
+        this.output = output;
         this.currentRound = 0; // counter for the number of rounds to display at the end
         this.activeEnemies = level.getInitialSpawns(); // initially, the enemy list will be filled with the initial spawns.
     }
 
     public int startBattle(){
-        // Display loading screen when player starts the game
-        ui.displayLoadingScreen();
+        output.displayLoadingScreen(); // Display loading screen when player starts the game
         // Start the loop of the battle. The loop will end if the game is over 
         while(!this.isGameOver()){
             this.currentRound ++;// increment each round in order to count the number of ground
-            this.ui.displayStartofEachRound(currentRound); // display the start of each round
-
+            this.output.displayStartofEachRound(currentRound); // display the start of each round
             this.playRound(); // this will process each round of the battle
             this.checkAndSpawnBackups(); // after each round, check the backup spawn condition
         }
         // When the game is over 
         if(player.isAlive()){
-            ui.displayVictoryScreen(player.getHp(), currentRound); // this for victory
+            output.displayVictoryScreen(player, currentRound); // this for victory
         } 
         else{
-            ui.displayDefeatScreen(activeEnemies.size(), currentRound); // this for defeat
+            output.displayDefeatScreen(activeEnemies.size(), currentRound); // this for defeat
         }
         // user's choice after game finished
-        return ui.promptGameOverOptions();
+        return input.promptGameOverOptions();
     }
 
     // each turn we check the applying status effect of each combatant
@@ -73,21 +74,21 @@ public class BattleEngine {
         checkStatusEffects(allCombatants); // check the status effect for all combatants at the start of each round
         // sort the combatants list according to TurnOrderStrategy 
         ArrayList<Combatant> turnOrder = turnStrategy.determineTurnOrder(allCombatants);
-
+        output.displayTurnOrder(turnOrder);
         // process turn for each combatant
         int size = turnOrder.size();
         for (int i = 0; i < size ; i++) {
             Combatant c = turnOrder.get(i);
             if(c.isAlive() && !this.isGameOver()){
-                processTurn(c);
+                processTurn(c); // combatant executes action
                 if(!player.isAlive()){
-                    ui.displayTurnResult(player.notAlive());
-                    break;
+                    output.displayTurnResult(player.notAlive());
+                    break; // game is over
                 }
                 for(int j = 0; j < activeEnemies.size(); j++) {
                     Enemy e = activeEnemies.get(j);
                     if (!e.isAlive()){
-                        ui.displayTurnResult(e.notAlive());
+                        output.displayTurnResult(e.notAlive());
                         activeEnemies.remove(e); 
                         j--;
                     }
@@ -97,30 +98,25 @@ public class BattleEngine {
                 break; // if the game is over, break the loop to end the battle
             }
         };
-        ui.displayBattleStatus(new ArrayList<Player>(){{add(player);}}, activeEnemies);
+        output.displayBattleStatus(new ArrayList<Player>(){{add(player);}}, activeEnemies, currentRound);
     }
 
     // process turn for each combatant
     private void processTurn(Combatant c) {
         if (!c.isActive()) {
-            ui.displayTurnResult(c.notActive()); // when combatant is stunned
+            output.displayTurnResult(c.notActive()); // when combatant is stunned
             return;
         }
-        Action action;
-        // if it is player
+        // reduce cooldown for player
         if (c instanceof Player) {
             Player p = (Player) c;
             p.reduceCooldown();
-            action = ui.promptPlayerActionSelection(p, activeEnemies);
         } 
-        // if it is enemy
-        else {
-            Enemy e = (Enemy) c;
-            action = ui.promptEnemyActionSelection(e, player);
-        }
+        // combatant choose action
+        Action action = input.promptActionSelection(c, player, activeEnemies);
         // after choosing action, exceute it
         action.execute(c);
-        ui.displayTurnResult(action.getResultMessage()); 
+        output.displayTurnResult(action.getResultMessage()); 
     }
 
     // method for backup spawn 
@@ -128,7 +124,7 @@ public class BattleEngine {
         if (activeEnemies.isEmpty() && level.hasBackupSpawns()) {
             activeEnemies.addAll(level.getBackupSpawns());
             level.changeBackupSpawnStatus(false); // change the backup spawn status to false to avoid multiple spawn
-            this.ui.notifyBackupSpawn(); // notify the player that backup spawn is triggered
+            this.output.notifyBackupSpawn(); // notify the player that backup spawn is triggered
         }
     }
 
