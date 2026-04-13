@@ -7,7 +7,7 @@ import Entity.Item.*;
 import Entity.Action.*;
 public abstract class Player extends Combatant{
     ArrayList <Item> inventory = new ArrayList<Item>();
-    ArrayList <Item> initialitemlist = new ArrayList<Item>();
+    ArrayList <Item> initialItemList = new ArrayList<Item>();
     public void removeItem(Item item){
         this.inventory.remove(item);
     }
@@ -22,10 +22,10 @@ public abstract class Player extends Combatant{
     public void setInventory(ArrayList<Item> inventory){
         this.inventory = inventory; 
         ArrayList<Item> tempList = new ArrayList<>(inventory);
-        this.initialitemlist = new ArrayList<>();
+        this.initialItemList = new ArrayList<>();
         for (Item item : tempList) {
-            if (!initialitemlist.contains(item)) {
-                initialitemlist.add(item);
+            if (!initialItemList.contains(item)) {
+                initialItemList.add(item);
             }
         }
     }
@@ -35,7 +35,7 @@ public abstract class Player extends Combatant{
     }
 
     public ArrayList<Item> getinitiallist(){
-        return this.initialitemlist;
+        return this.initialItemList;
     }
 
     public abstract Player clonePlayer();
