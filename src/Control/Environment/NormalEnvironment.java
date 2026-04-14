@@ -5,7 +5,7 @@ import Entity.Combatant.*;
 public class NormalEnvironment extends Environment {
     public NormalEnvironment(){
         this.value = 0;
-        this.description = "Normal environment has no effect on combatants at the start of each turn.";
+        this.description = "Normal environment: has no effect on combatants at the start of each turn.";
     }
 
     @Override
