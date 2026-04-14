@@ -10,6 +10,7 @@ import Boundary.BattleOutPutUI;
 import Boundary.BattleInPutUI;
 import java.util.ArrayList;
 import Control.TurnOrderStrategy.TurnOrderStrategy;
+import Control.Environment.Environment;
 
 public class BattleEngine {
     private Player player;
@@ -19,8 +20,9 @@ public class BattleEngine {
     private int currentRound = 0;
     private BattleInPutUI input;
     private BattleOutPutUI output;
+    private Environment environment;
 
-    public BattleEngine(Player player, LevelManagement level, TurnOrderStrategy strategy, BattleInPutUI input, BattleOutPutUI output) {
+    public BattleEngine(Player player, LevelManagement level, TurnOrderStrategy strategy, BattleInPutUI input, BattleOutPutUI output, Environment environment) {
         this.player = player; // this will connect with the promptCharacterSelection() in GameCLI when we connect them in the main
         this.level = level; // this will connect with the promptDifficultySelection() in GameCLI when we connect them in the main
         this.turnStrategy = strategy; // this will be the speed strategy
@@ -28,6 +30,7 @@ public class BattleEngine {
         this.output = output;
         this.currentRound = 0; // counter for the number of rounds to display at the end
         this.activeEnemies = level.getInitialSpawns(); // initially, the enemy list will be filled with the initial spawns.
+        this.environment = environment; // this will connect with the promptEnvironmentSelection() in GameCLI when we connect them in the main
     }
 
     public int startBattle(){
@@ -37,6 +40,7 @@ public class BattleEngine {
             this.currentRound ++;// increment each round in order to count the number of ground
             this.output.displayStartofEachRound(currentRound); // display the start of each round
             this.playRound(); // this will process each round of the battle
+            
             this.checkAndSpawnBackups(); // after each round, check the backup spawn condition
         }
         // When the game is over 
@@ -98,6 +102,23 @@ public class BattleEngine {
                 break; // if the game is over, break the loop to end the battle
             }
         };
+
+        if (!this.isGameOver()){
+            environment.applyEnvironmentEffect(player); // apply environment effect to player
+            int i =0;
+            output.displayTurnResult(environment.getResultMessage()); // display the environment effect message after applying the effect
+            while (!this.isGameOver() && i < activeEnemies.size()) {
+                Enemy e = activeEnemies.get(i);
+                environment.applyEnvironmentEffect(e); // apply environment effect to each enemy
+                output.displayTurnResult(environment.getResultMessage()); // display the environment effect message after applying the effect
+                if (!e.isAlive()){
+                    output.displayTurnResult(e.notAlive());
+                    activeEnemies.remove(e);
+                    continue;
+                }
+                i++;
+            };
+        }
         output.displayBattleStatus(new ArrayList<Player>(){{add(player);}}, activeEnemies, currentRound);
     }
 
