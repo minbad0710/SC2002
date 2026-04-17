@@ -30,7 +30,7 @@ public class BattleEngine {
         this.output = output;
         this.currentRound = 0; // counter for the number of rounds to display at the end
         this.activeEnemies = level.getInitialSpawns(); // initially, the enemy list will be filled with the initial spawns.
-        this.environment = environment; // this will connect with the promptEnvironmentSelection() in GameCLI when we connect them in the main
+        this.environment = environment;
     }
 
     public int startBattle(){
@@ -104,13 +104,13 @@ public class BattleEngine {
         };
 
         if (!this.isGameOver()){
-            environment.applyEnvironmentEffect(player); // apply environment effect to player
+            environment.applyEnvironmentEffect(player); //apply environment effect to player
             int i =0;
-            output.displayTurnResult(environment.getResultMessage()); // display the environment effect message after applying the effect
+            output.displayTurnResult(environment.getResultMessage()); 
             while (!this.isGameOver() && i < activeEnemies.size()) {
                 Enemy e = activeEnemies.get(i);
-                environment.applyEnvironmentEffect(e); // apply environment effect to each enemy
-                output.displayTurnResult(environment.getResultMessage()); // display the environment effect message after applying the effect
+                environment.applyEnvironmentEffect(e); // apply environment effect to each of active enemy
+                output.displayTurnResult(environment.getResultMessage()); 
                 if (!e.isAlive()){
                     output.displayTurnResult(e.notAlive());
                     activeEnemies.remove(e);
