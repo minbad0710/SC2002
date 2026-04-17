@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import Control.LevelManagment.LevelManagement;
 import Entity.Action.TargetType;
+import Control.Environment.Environment;
 
 public class GameCLI implements BattleInPutUI, BattleOutPutUI{
     private Scanner scanner;
@@ -69,6 +70,9 @@ public class GameCLI implements BattleInPutUI, BattleOutPutUI{
     }
 
     public void displayTurnResult(String message) {
+        if  (message ==""){
+            return;
+        }
         System.out.println(">> " + message);
     }
 
@@ -178,6 +182,7 @@ public class GameCLI implements BattleInPutUI, BattleOutPutUI{
             System.out.println("- " + e.getName() + " " + e.getStatsSummary()); 
         }
         int num = getValidInput(1, levels.size());
+        System.out.println();
         return levels.get(num - 1);
     }
 
@@ -188,6 +193,7 @@ public class GameCLI implements BattleInPutUI, BattleOutPutUI{
         for (int i = 0; i < inventory.size(); i++) {
             System.out.println((i + 1) + ". " + inventory.get(i).getName());
         }
+        System.out.println();
         return getValidInput(1, inventory.size()) - 1; // user only can choose from the inventor list
     }
     // Combatant decides action to take in their turn
@@ -202,6 +208,7 @@ public class GameCLI implements BattleInPutUI, BattleOutPutUI{
 
             int choice = getValidInput(1, actions.size());
             Action selectedAction = actions.get(choice - 1);
+            System.out.println();
 
             if (!selectedAction.isAvailable((Player)actor)) {
                 System.out.println(">> " + selectedAction.getName() + " is not available! Please choose again.");
@@ -234,6 +241,7 @@ public class GameCLI implements BattleInPutUI, BattleOutPutUI{
 
         if (type == TargetType.SINGLE_ENEMY) {
             int idx = promptTargetSelection(enemies);
+            System.out.println();
             action.addTarget(enemies.get(idx));
         } 
         else if (type == TargetType.ALL_ENEMIES) {
@@ -251,6 +259,16 @@ public class GameCLI implements BattleInPutUI, BattleOutPutUI{
             System.out.printf("%d. %s (HP: %d)\n", (i + 1), targets.get(i).getName(), targets.get(i).getHp());
         }
         return getValidInput(1, targets.size()) - 1;
+    }
+
+    public Environment promptEnvironmentSelection(ArrayList<Environment> environments) {
+        System.out.println("Select Environment: (Additional feature)");
+        for (int i = 0; i < environments.size(); i++) {
+            System.out.println((i + 1) + ". " + environments.get(i).getEnvironmentDescription());
+        }
+        int choice = getValidInput(1, environments.size());
+        System.out.println();
+        return environments.get(choice - 1);
     }
 
     // when the game is over

@@ -14,6 +14,7 @@ import Entity.Item.Item;
 import Entity.Item.Potion;
 import Entity.Item.PowerStone;
 import Entity.Item.SmokeBomb;
+import Control.Environment.*;
 
 public class Main{
     public static void main(String[] args) {
@@ -39,11 +40,17 @@ public class Main{
         itemPool.add(new PowerStone());
         itemPool.add(new SmokeBomb());
 
+        ArrayList<Environment> environments = new ArrayList<>();
+        environments.add(new FireEnvironment());
+        environments.add(new WaterEnvironment());
+        environments.add(new NormalEnvironment());
+
         while(running){
             Player selectedTemplate = input.promptCharacterSelection(playerTemplates);
         
             ArrayList<Item> initialItems = input.promptInitialItemSelection(itemPool);
             LevelManagement selectedLevel = input.promptDifficultySelection(enemyTemplates, levelTemplates);
+            Environment selectedEnvironment = input.promptEnvironmentSelection(environments);
             
             boolean matchRunning = true;
             while(matchRunning) {
@@ -53,7 +60,7 @@ public class Main{
                 LevelManagement current_level = selectedLevel.cloneLevel();
                 
                 TurnOrderStrategy turnStrategy = new SpeedOrderStrategy();
-                BattleEngine engine = new BattleEngine(player, current_level, turnStrategy, input, output);
+                BattleEngine engine = new BattleEngine(player, current_level, turnStrategy, input, output, selectedEnvironment);
                 
                 int result = engine.startBattle();
                 output.displayGameOverMessage(result);
