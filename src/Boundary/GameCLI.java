@@ -146,12 +146,6 @@ public class GameCLI implements BattleInPutUI, BattleOutPutUI{
 
             int choice = getValidInput(1, availableItems.size());
             Item chosen = availableItems.get(choice - 1);
-
-            // if (!selectedItems.isEmpty() && chosen.getName().equals(selectedItems.get(0).getName())) {
-            //     selectedItems.get(0).setName(chosen.getName() + " A");
-            //     chosen.setName(chosen.getName() + " B");
-            // }
-
             selectedItems.add(chosen);
             System.out.println("Added " + chosen.getName() + " to inventory.");
             System.out.println();
@@ -261,6 +255,7 @@ public class GameCLI implements BattleInPutUI, BattleOutPutUI{
         return getValidInput(1, targets.size()) - 1;
     }
 
+    // Additional feature: choose environment before the battle begins
     public Environment promptEnvironmentSelection(ArrayList<Environment> environments) {
         System.out.println("Select Environment: (Additional feature)");
         for (int i = 0; i < environments.size(); i++) {

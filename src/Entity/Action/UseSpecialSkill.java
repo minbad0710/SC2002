@@ -18,7 +18,7 @@ public class UseSpecialSkill extends Action{
             previousHp.add(target.getHp());
         }
         s.execute(actor, targets);
-        this.resultMessage = actor.getName() + " -> " + s.getName() + " -> " + s.getTargetString(actor, targets, previousHp) + "| Cooldown: " + actor.getCooldown(); // the message after using this special skill, which is the same as the message after using the special skill, but with a note about cooldown
+        this.resultMessage = actor.getName() + " -> " + s.getName() + " -> " + s.getTargetString(actor, targets, previousHp) + "| Cooldown: " + actor.getCooldown(); // corresponding message to print
     }
     
     @Override
