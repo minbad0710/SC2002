@@ -23,9 +23,14 @@ public class ArcaneBlast extends SpecialSkill{
     @Override
     public String getTargetString(Combatant actor, ArrayList <Combatant> combatants, ArrayList<Integer> previousHp) {
         String message = "All Enemies: ";
+        int num = 0;
         for (int i = 0; i < combatants.size(); i++) {
+            if (combatants.get(i).getHp() == 0 ){
+                num++;
+            }
             message += combatants.get(i).getName() + " HP: " + previousHp.get(i) + " -> " + combatants.get(i).getHp() + "; ";
         }
+        message += "| Attack: " + actor.getAttack() + "| Enemies Defeated: " + num;
         return message;
     }
     
