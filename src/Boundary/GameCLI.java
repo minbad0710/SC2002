@@ -262,7 +262,7 @@ public class GameCLI implements BattleInPutUI, BattleOutPutUI{
     }
 
     public Environment promptEnvironmentSelection(ArrayList<Environment> environments) {
-        System.out.println("Select Environment:");
+        System.out.println("Select Environment: (Additional features)");
         for (int i = 0; i < environments.size(); i++) {
             System.out.println((i + 1) + ". " + environments.get(i).getEnvironmentDescription());
         }
