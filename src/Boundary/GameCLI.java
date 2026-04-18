@@ -82,7 +82,7 @@ public class GameCLI implements BattleInPutUI, BattleOutPutUI{
 
     public void displayVictoryScreen(Player p, int rounds) {
         System.out.println("\n***************************************************************");
-        System.out.println("      Congratulations, you have deffeated all your enemies.      ");
+        System.out.println("      Congratulations, you have defeated all your enemies.      ");
         System.out.println("***************************************************************");
         System.out.println("Statistics:");
         System.out.println("- Remaining HP: " + p.getHp());
