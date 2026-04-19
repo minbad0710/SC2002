@@ -1,0 +1,243 @@
+commit df72cde7b94f5feea73b0a8e6808e26cf9e9edcb
+Author: Dung-CS <phamngocphuongdung2k7@gmail.com>
+Date:   Sun Apr 19 12:41:05 2026 +0800
+
+    Delete previous sequence file.drawio
+
+commit 17d84adb7398394dc9462a016bf9869bcf2dd8df
+Author: Dung-CS <phamngocphuongdung2k7@gmail.com>
+Date:   Sun Apr 19 12:40:37 2026 +0800
+
+    Delete previous file.png
+
+commit b99a1dd87533510b90db17aa2ff95c6b7fc22097
+Author: srinithyraja <srinithyrajagopalan@gmail.com>
+Date:   Sun Apr 19 12:25:50 2026 +0800
+
+    Add files via upload
+
+commit 2330980f44ec43d7e610bc09d139a9ef45ad4ad3
+Author: Dung-CS <phamngocphuongdung2k7@gmail.com>
+Date:   Sun Apr 19 01:31:55 2026 +0800
+
+    Fix typo
+
+commit 25b677bb7cfc1e466fa6798bf56ce065b31165aa
+Author: srinithyraja <srinithyrajagopalan@gmail.com>
+Date:   Sat Apr 18 20:41:09 2026 +0800
+
+    Add files via upload
+
+commit 78539c00b610696d32f8b60b3ba228ab17d69917
+Author: srinithyraja <srinithyrajagopalan@gmail.com>
+Date:   Sat Apr 18 20:36:50 2026 +0800
+
+    Add files via upload
+
+commit 67fb33a37e36e5f219bf01ead4adcb5f6e6e8047
+Author: junheng <junheng1215@gmail.com>
+Date:   Sat Apr 18 14:44:32 2026 +0800
+
+    Added class diagram
+
+commit b17315a1c074d3c89f034d10c9fe02d25a61c289
+Merge: 2b6bc45 f4c2ee0
+Author: Dung-CS <phamngocphuongdung2k7@gmail.com>
+Date:   Fri Apr 17 23:44:47 2026 +0800
+
+    Merge pull request #3 from Dung-CS/Dung
+    
+    change comment
+
+commit f4c2ee0dc3c8971154c0f089baefc67601a4fa66
+Author: Dung-CS <phamngocphuongdung2k7@gmail.com>
+Date:   Fri Apr 17 15:42:48 2026 +0000
+
+    change comment
+
+commit 2b6bc452e9b6f21257c38ef8b47620017c9efce1
+Merge: 809711e ba2e49c
+Author: Dung-CS <phamngocphuongdung2k7@gmail.com>
+Date:   Fri Apr 17 23:01:45 2026 +0800
+
+    Merge pull request #2 from Dung-CS/Dung
+    
+    Dung
+
+commit ba2e49c3b4301356b02b2c718e8d6c384e4921ee
+Author: Dung-CS <phamngocphuongdung2k7@gmail.com>
+Date:   Fri Apr 17 14:49:37 2026 +0000
+
+    print
+
+commit 27aa4a1f50628a1691ec97aa72236be3604b57f8
+Author: Dung-CS <phamngocphuongdung2k7@gmail.com>
+Date:   Fri Apr 17 14:39:27 2026 +0000
+
+    change print format a litlle to make it clearer
+
+commit 34d6428ab6e4b18241954b2733176cf4d3bdf1ab
+Author: Dung-CS <phamngocphuongdung2k7@gmail.com>
+Date:   Tue Apr 14 16:33:43 2026 +0000
+
+    adjust printed lines
+
+commit ad21f53374dd123cf2ced28af900671ee797b98a
+Author: Dung-CS <phamngocphuongdung2k7@gmail.com>
+Date:   Tue Apr 14 16:10:50 2026 +0000
+
+    Additional features: Environment effects for combatants
+
+commit 809711ec263890c40997a1ac3f3dbced6a95374c
+Author: junheng <junheng1215@gmail.com>
+Date:   Mon Apr 13 11:49:10 2026 +0800
+
+    replace class diagram
+
+commit 18fc4453a9a3500e4b23ad71a70f63d0348edbe9
+Author: junheng <junheng1215@gmail.com>
+Date:   Mon Apr 13 11:23:33 2026 +0800
+
+    Update Player.java
+
+commit 60e9cb52ed4c47026292e8f9dcf8a1574cafe537
+Merge: a37d4f8 e830ae1
+Author: Dung-CS <phamngocphuongdung2k7@gmail.com>
+Date:   Sat Apr 11 02:37:03 2026 +0800
+
+    Merge pull request #1 from Dung-CS/Dung
+    
+    Dung
+
+commit e830ae12e9359f7f0e12ecaefdf18db994919633
+Author: Dung-CS <phamngocphuongdung2k7@gmail.com>
+Date:   Fri Apr 10 18:16:29 2026 +0000
+
+    Printing format
+
+commit 5a53583093b8c89b68b1a67f80ae93a39ce66fe3
+Author: Your Name <duynt0710@gmail.com>
+Date:   Fri Apr 10 22:29:51 2026 +0800
+
+    new
+
+commit 423626b320e481a3f299423b497b37c0df1e1ba8
+Author: Your Name <duynt0710@gmail.com>
+Date:   Fri Apr 10 03:11:41 2026 +0800
+
+    update
+
+commit a37d4f883500ff2004b166895a55deff93f67d0c
+Author: junheng <junheng1215@gmail.com>
+Date:   Tue Apr 7 17:33:04 2026 +0800
+
+    Added UML Class Diagram
+    
+    Png format.
+
+commit f4775ce9a6d9172a277e26cf2cd941b5ce479492
+Author: Your Name <duynt0710@gmail.com>
+Date:   Mon Apr 6 03:18:03 2026 +0800
+
+    Better for requirements but worse for me
+
+commit f62ffd6a3d8d53ad3afb2c4bded5dabc07c7ec34
+Author: junheng <junheng1215@gmail.com>
+Date:   Sat Apr 4 13:53:33 2026 +0800
+
+    edited accessibility of variables
+
+commit 2de1e4d4f4f45df031677ae4b98d1e6f4be994c5
+Author: junheng <junheng1215@gmail.com>
+Date:   Wed Apr 1 15:13:52 2026 +0800
+
+    Update SpecialSkill.java
+    
+    adjust some naming convention
+
+commit 0179f9e6b9f86ef70788a01c39fac50a1a08281c
+Author: Dung-CS <phamngocphuongdung2k7@gmail.com>
+Date:   Tue Mar 31 08:45:42 2026 +0000
+
+    change check status effect and order of selection at the begining of the battle
+
+commit 73826944e76ffe870ff5a96064747d3d1ce3ceb1
+Author: Dung-CS <phamngocphuongdung2k7@gmail.com>
+Date:   Tue Mar 31 03:34:02 2026 +0000
+
+    change SmokeBombEffect.java
+
+commit 8fe84c0fcd9caf114598c192e38aefdd23b098e7
+Merge: 90f44d3 7446184
+Author: Your Name <duynt0710@gmail.com>
+Date:   Tue Mar 31 02:23:51 2026 +0800
+
+    fix with the medium level
+
+commit 90f44d3b39863bb5a225bab52ab85ffbb62ebb4f
+Merge: 16439b0 b1b5f27
+Author: Your Name <duynt0710@gmail.com>
+Date:   Mon Mar 30 21:44:05 2026 +0800
+
+    test
+
+commit 744618488e99a7b157907962f78451f1df6768ac
+Author: Dung-CS <phamngocphuongdung2k7@gmail.com>
+Date:   Mon Mar 30 05:08:15 2026 +0000
+
+    adjust
+
+commit 16439b076cd8603001a052fc6ab45037895b91b4
+Author: Your Name <duynt0710@gmail.com>
+Date:   Sun Mar 29 15:33:42 2026 +0800
+
+    adding
+
+commit b1b5f27dd9576dbfe31c2480c219eaaf9aaf971c
+Author: Dung-CS <phamngocphuongdung2k7@gmail.com>
+Date:   Sun Mar 29 07:27:08 2026 +0000
+
+    Change Item Selection to allow multiple selection of the same item by replacing the selected item with a new instance in the available list. This is done by adding a recreate() method in the Item class and overriding it in each item subclass to return a new instance of the item. The selected item is then replaced with a new instance in the available list after it is added to the selected items list.
+
+commit 708ffbb195ca9e4d2dc18605b58810f2a307a1ef
+Merge: 5b22fdb ac0668f
+Author: Dung-CS <phamngocphuongdung2k7@gmail.com>
+Date:   Sun Mar 29 06:38:00 2026 +0000
+
+    Merge remote-tracking branch 'origin/Duy'
+
+commit ac0668f99b72c526678e341079d7244b95fd82a8
+Author: Your Name <duynt0710@gmail.com>
+Date:   Sun Mar 29 01:45:50 2026 +0800
+
+    adding the control and boundary class
+
+commit 5b22fdb7ccec126795860e26309b66cd8e42fe5c
+Author: Dung-CS <phamngocphuongdung2k7@gmail.com>
+Date:   Sat Mar 28 23:15:23 2026 +0800
+
+    Delete print
+
+commit c4c234dc446d7f4b76f936c59737127c2088fe37
+Author: Dung-CS <phamngocphuongdung2k7@gmail.com>
+Date:   Sat Mar 28 23:04:37 2026 +0800
+
+    Fix constructor parameter name in SpecialSkill
+
+commit f54a0c19ddf464261bc376e55f212898f031acbc
+Author: Dung-CS <phamngocphuongdung2k7@gmail.com>
+Date:   Sat Mar 28 22:54:39 2026 +0800
+
+    Change comment in file
+
+commit 0a3fc52c53c7f7994650441ca685c41e7a7bfb91
+Author: Dung-CS <phamngocphuongdung2k7@gmail.com>
+Date:   Fri Mar 27 10:46:23 2026 +0000
+
+    Entity classes
+
+commit 2b4c62e18e32dd2a908c3ed6637a727d8b88be4f
+Author: Dung-CS <phamngocphuongdung2k7@gmail.com>
+Date:   Fri Mar 20 13:08:19 2026 +0800
+
+    Initial commit
